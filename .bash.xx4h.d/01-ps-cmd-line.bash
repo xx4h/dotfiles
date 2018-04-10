@@ -13,7 +13,20 @@ function parse_git_branch {
 }
 
 function set_prompt() {
-    PS1="${RED}\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[${RED}\342\234\227${CYAN}]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo "${RED}root${LIGHT_YELLOW}@${LIGHT_CYAN}\h${COLOR_NONE}"; else echo "${DEFAULT_COLOR}\u${LIGHT_YELLOW}@${LIGHT_CYAN}\h${COLOR_NONE}"; fi)${RED}]\342\224\200[${TEXT_BOLD}\j${COLOR_NONE}${RED}]$(parse_git_branch)\342\224\200[${GREEN}\w${RED}]\n${RED}\342\224\224\342\224\200\342\224\200\342\225\274 ${COLOR_NONE}${LIGHT_YELLOW}\\$ ${COLOR_NONE}"
+    # ┌─ with [✗]─ if exit code of last line was != 0 AND [ at the end (colored red if exit code == 0, cyan if not)
+    PS1="${RED}\342\224\214\342\224\200\$([[ $? != 0 ]] && echo \"[${RED}\342\234\227${CYAN}]\342\224\200\")["
+    # USER@HOSTNAME (user in default color, if root, user red)
+    if [[ ${EUID} == 0 ]]; then
+        PS1="${PS1}${TEXT_BOLD}${RED}root${LIGHT_YELLOW}@${LIGHT_CYAN}\h${COLOR_NONE}"
+    else
+        PS1="${PS1}${TEXT_BOLD}${DEFAULT_COLOR}\u${LIGHT_YELLOW}@${LIGHT_CYAN}\h${COLOR_NONE}"
+    fi
+    # ─[0] while 0 is the count of background jobs in the current shell
+    PS1="${PS1}${RED}]\342\224\200[${TEXT_BOLD}\j${COLOR_NONE}${RED}]"
+    # ─[✗]─[BRANCH]─[GIT_BASE_FOLDER]─[~] (if current path is in git) or ─[~] AND a new line, which creates the two-line PS1
+    PS1="${PS1}$(parse_git_branch)\342\224\200[${GREEN}\w${RED}]\n"
+    # └──╼ $
+    PS1="${PS1}${RED}\342\224\224\342\224\200\342\224\200\342\225\274 ${COLOR_NONE}${LIGHT_YELLOW}\\$ ${COLOR_NONE}"
 }
 
 if [ "$color_prompt" = yes ]; then

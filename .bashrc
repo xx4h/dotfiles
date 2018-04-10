@@ -103,6 +103,17 @@ HISTFILESIZE=999999
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-xx4hBashIsSources && for extension in ~/.bashrc.d/*.bash; do source $extension; done
+# source xx4h bash stuff
+for rc_file in ~/.bash.xx4h.d/*.bash; do
+    if ! [[ "$rc_file" =~ \*\.bash$ ]]; then
+        . "$rc_file"
+    fi
+done
+
+for rc_file in ~/.bashrc.d/*.bash; do
+    if ! [[ "$rc_file" =~ \*\.bash$ ]]; then
+        . "$rc_file"
+    fi
+done
 
 ## end inline settings

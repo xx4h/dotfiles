@@ -62,13 +62,14 @@ fi
 
 function parse_git_branch {
     GIT_STATUS="$(~/.gitstatus.py 2>/dev/null)"
-    GIT_BRANCH="$(echo "${GIT_STATUS}" | sed -n 1p)"
-    GIT_CLEAN="$(echo "${GIT_STATUS}" | sed -n 8p)"
+    GIT_FOLDER="$(echo "${GIT_STATUS}" | sed -n 1p)"
+    GIT_BRANCH="$(echo "${GIT_STATUS}" | sed -n 2p)"
+    GIT_CLEAN="$(echo "${GIT_STATUS}" | sed -n 9p)"
     if [ -n "$GIT_BRANCH" ]; then
         if [ "$GIT_CLEAN" -ne 1 ]; then
-            echo '\342\224\200[\[\033[1;33m\]✗\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;31m\]]'
+            echo '\342\224\200[\[\033[1;33m\]✗\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_FOLDER"'\[\033[0;31m\]]'
         else
-            echo '\342\224\200[\[\033[1;32m\]✓\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;31m\]]'
+            echo '\342\224\200[\[\033[1;32m\]✓\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_FOLDER"'\[\033[0;31m\]]'
         fi
     fi
 }

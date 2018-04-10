@@ -75,6 +75,11 @@ def get_stash():
     except IOError:
         return 0
 
+def get_folder():
+    cmd = Popen(['git', 'rev-parse', '--show-toplevel'], stdout=PIPE, stderr=PIPE)
+    so, se = cmd.communicate()
+    return so.split('/')[-1].rstrip()
+
 
 # `git status --porcelain --branch` can collect all information
 # branch, remote_branch, untracked, staged, changed, conflicts, ahead, behind
@@ -129,6 +134,7 @@ for st in status:
             staged.append(st)
 
 stashed = get_stash()
+folder = get_folder()
 if not changed and not staged and not conflicts and not untracked and not stashed:
     clean = 1
 else:
@@ -141,6 +147,7 @@ if python_version == 2:
     remote = remote.decode('utf-8')
 
 out = '\n'.join([
+    folder,
     branch,
     remote,
     to_str(len(staged)),

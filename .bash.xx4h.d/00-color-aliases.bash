@@ -1,8 +1,16 @@
-LIGHT_GRAY="\[\033[0;37m\]"
-LIGHT_PURPLE="\[\033[1;34m\]"
-LIGHT_YELLOW="\[\033[0;93m\]"
-YELLOW="\[\033[0;33m\]"
-WHITE="\[\033[1;37m\]"
-CYAN="\[\e[1;36m\]"
-RED="\[\e[0;31m\]"
-COLOR_NONE="\[\e[0m\]"
+# Escape Opening Foreground/Background ; 5 (just a static, idk) ; 256 colors color + m at the end
+# \e     [       38/48                 ; 5                      ; 11m
+#
+# always remove all spaces from the above code
+
+LIGHT_GRAY="\e[37m"
+LIGHT_PURPLE="\e[34m"
+LIGHT_YELLOW="\e[1;38;5;190m"
+LIGHT_CYAN="\e[96m"
+YELLOW="\e[38;5;220m"
+WHITE="\e[37m"
+GREEN="\e[32m"
+CYAN="\e[36m"
+RED="\e[31m"
+COLOR_NONE="\e[0m"
+DEFAULT_COLOR="\e[39m"

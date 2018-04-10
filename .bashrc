@@ -16,8 +16,6 @@ function xx4hBashIsSources() {
     fi
 }
 
-xx4hBashIsSources && for extension in ~/.bashrc.d/*.bash; do source $extension; done
-
 function xx4hBashGetSourceOrder() {
     xx4hBashIsSources && ls -1 ~/.bashrc.d/*.bash || echo "No .bash files to source in ~/.bashrc.d"
 }
@@ -41,12 +39,6 @@ WHITE="\[\033[1;37m\]"
 CYAN="\[\e[1;36m\]"
 RED="\[\e[0;31m\]"
 COLOR_NONE="\[\e[0m\]"
-
-# Set the values for some environment variables:
-VISUAL=vim
-EDITOR=vim
-QUILT_PATCHES="debian/patches"
-export VISUAL EDITOR QUILT_PATCHES
 
 # deactivate terminal signal
 #setterm -bfreq 0
@@ -111,7 +103,6 @@ HISTFILESIZE=999999
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-PATH=$PATH:~/bin:/home/linux-ag/bin
-export PATH DISPLAY LESS TERM PS1 PS2
+xx4hBashIsSources && for extension in ~/.bashrc.d/*.bash; do source $extension; done
 
 ## end inline settings

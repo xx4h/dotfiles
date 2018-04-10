@@ -78,7 +78,7 @@ def get_stash():
 def get_folder():
     cmd = Popen(['git', 'rev-parse', '--show-toplevel'], stdout=PIPE, stderr=PIPE)
     so, se = cmd.communicate()
-    return so.split('/')[-1].rstrip()
+    return so.rstrip()
 
 
 # `git status --porcelain --branch` can collect all information
@@ -135,6 +135,12 @@ for st in status:
 
 stashed = get_stash()
 folder = get_folder()
+xx4h_disable_git_parse_user_home = os.environ.get('XX4H_DISABLE_GIT_PARSE_USER_HOME', 0)
+if folder == os.path.expanduser('~'+os.environ['USER']) and xx4h_disable_git_parse_user_home != 0:
+    # do nothing
+    sys.exit(0)
+else:
+    folder = folder.split('/')[-1].rstrip()
 if not changed and not staged and not conflicts and not untracked and not stashed:
     clean = 1
 else:

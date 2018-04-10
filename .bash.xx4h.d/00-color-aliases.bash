@@ -1,0 +1,8 @@
+LIGHT_GRAY="\[\033[0;37m\]"
+LIGHT_PURPLE="\[\033[1;34m\]"
+LIGHT_YELLOW="\[\033[0;93m\]"
+YELLOW="\[\033[0;33m\]"
+WHITE="\[\033[1;37m\]"
+CYAN="\[\e[1;36m\]"
+RED="\[\e[0;31m\]"
+COLOR_NONE="\[\e[0m\]"

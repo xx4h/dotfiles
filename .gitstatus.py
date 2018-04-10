@@ -135,8 +135,8 @@ for st in status:
 
 stashed = get_stash()
 folder = get_folder()
-xx4h_disable_git_parse_user_home = os.environ.get('XX4H_DISABLE_GIT_PARSE_USER_HOME', 0)
-if folder == os.path.expanduser('~'+os.environ['USER']) and xx4h_disable_git_parse_user_home != 0:
+xx4h_disable_git_parse_user_home = os.environ.get('XX4H_DISABLE_GIT_PARSE_USER_HOME', '0')
+if folder == os.path.expanduser('~'+os.environ['USER']) and xx4h_disable_git_parse_user_home != '0':
     # do nothing
     sys.exit(0)
 else:

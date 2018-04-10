@@ -57,6 +57,14 @@ function xx4hBashGetSourceOrder() {
     xx4hBashIsSources && ls -1 ~/.bashrc.d/*.bash || echo "No .bash files to source in ~/.bashrc.d"
 }
 
+function xx4hBashTempEnableHomeGitParse() {
+    export XX4H_DISABLE_GIT_PARSE_USER_HOME=0
+}
+
+function xx4hBashTempDisableHomeGitParse() {
+    export XX4H_DISABLE_GIT_PARSE_USER_HOME=1
+}
+
 function h3lp () {
     echo "Some tools:"
     echo "  xx4hBashGetSourceOrder                 | List source order of .bash files"

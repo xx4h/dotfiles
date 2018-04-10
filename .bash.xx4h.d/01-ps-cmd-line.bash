@@ -19,17 +19,17 @@ function set_prompt() {
 if [ "$color_prompt" = yes ]; then
     PROMPT_COMMAND=set_prompt
 else
-    PS1='┌──[\u@\h]─[\w]\n└──╼ \$ '
+    case "$TERM" in
+    xterm*|rxvt*|screen-256color*)
+        PROMPT_COMMAND=set_prompt
+        ;;
+    *)
+        PS1='┌──[\u@\h]─[\w]\n└──╼ \$ '
+        ;;
+    esac
 fi
 unset color_prompt force_color_prompt
 
-case "$TERM" in
-xterm*|rxvt*|screen-256color*)
-    PROMPT_COMMAND=set_prompt
-    ;;
-*)
-    ;;
-esac
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return

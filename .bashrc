@@ -3,6 +3,14 @@
 
 ## begin inline settings
 
+# thanks to:
+#   https://stackoverflow.com/questions/5014823/how-to-profile-a-bash-shell-script-slow-startup?answertab=votes#tab-top
+if [ -f ~/.bashrc.debug ]; then
+    PS4='+ $(date "+%s.%N")\011 '
+    exec 3>&2 2>/tmp/bashstart.$$.log
+    set -x
+fi
+
 # deactivate terminal signal
 #setterm -bfreq 0
 
@@ -33,5 +41,10 @@ for rc_file in ~/.bashrc.d/*.bash; do
         . "$rc_file"
     fi
 done
+
+if [ -f ~/.bashrc.debug ]; then
+    set +x
+    exec 2>&3 3>&-
+fi
 
 ## end inline settings

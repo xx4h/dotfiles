@@ -13,7 +13,7 @@ function parse_git_branch {
 }
 
 function set_prompt() {
-    PS1="${RED}\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[${RED}\342\234\227${CYAN}]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo "${RED}root${LIGHT_YELLOW}@${LIGHT_CYAN}\h"; else echo "${DEFAULT_COLOR}\u${LIGHT_YELLOW}@${LIGHT_CYAN}\h"; fi)${RED}]\342\224\200[\j]$(parse_git_branch)\342\224\200[${GREEN}\w${RED}]\n${RED}\342\224\224\342\224\200\342\224\200\342\225\274 ${COLOR_NONE}${LIGHT_YELLOW}\\$ ${COLOR_NONE}"
+    PS1="${RED}\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[${RED}\342\234\227${CYAN}]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo "${RED}root${LIGHT_YELLOW}@${LIGHT_CYAN}\h${COLOR_NONE}"; else echo "${DEFAULT_COLOR}\u${LIGHT_YELLOW}@${LIGHT_CYAN}\h${COLOR_NONE}"; fi)${RED}]\342\224\200[${TEXT_BOLD}\j${COLOR_NONE}${RED}]$(parse_git_branch)\342\224\200[${GREEN}\w${RED}]\n${RED}\342\224\224\342\224\200\342\224\200\342\225\274 ${COLOR_NONE}${LIGHT_YELLOW}\\$ ${COLOR_NONE}"
 }
 
 if [ "$color_prompt" = yes ]; then

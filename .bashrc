@@ -6,15 +6,6 @@
 # deactivate terminal signal
 #setterm -bfreq 0
 
-# Set up the LS_COLORS and LS_OPTIONS environment variables for color ls:
-if [ "$SHELL" = "/bin/zsh" ]; then
-eval `dircolors -z`
-elif [ "$SHELL" = "/bin/ash" ]; then
-eval `dircolors -s`
-else
-eval `dircolors -b`
-fi
-
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth

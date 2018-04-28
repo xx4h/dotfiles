@@ -1,0 +1,107 @@
+conky.config = {
+--
+-- h4xx conky config
+-- v1.1
+--
+-- Dependencies:
+--   - DejaVu Sans Mono (FONT)
+--   - OpenLogos (FONT)
+--   - vnstat
+--   - wget
+--   - wireless-tools (iwconfig)
+--
+-- Backup:
+-- ${font OpenLogos:size=20}N $font$nodename@$kernel $alignr ${uptime}
+
+alignment = "top_right",
+background = false,
+border_width = 1,
+cpu_avg_samples = 2,
+default_color = "577484",
+default_outline_color = "d5d9dc",
+default_shade_color = "d5d9dc",
+double_buffer = true,
+draw_borders = false,
+draw_graph_borders = false,
+draw_outline = false,
+draw_shades = false,
+use_xft = true,
+font = "DejaVu Sans Mono:size=8",
+gap_x = 5,
+gap_y = 5,
+-- minimum_size = 400 1000,
+maximum_width = 450,
+if_up_strictness = "link",
+net_avg_samples = 2,
+no_buffers = true,
+out_to_console = false,
+out_to_stderr = false,
+extra_newline = false,
+own_window = true,
+own_window_transparent = true,
+own_window_argb_visual = true,
+own_window_type = "normal",
+own_window_class = "conky-semi",
+own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+stippled_borders = 0,
+update_interval = 1.0,
+update_interval_on_battery = 10.0,
+uppercase = false,
+use_spacer = "none",
+show_graph_scale = false,
+show_graph_range = false,
+}
+
+conky.text = [[
+$font$nodename@$kernel $alignr ${uptime}
+${font DejaVu Sans Mono:size=12}${color orange}   ${time %H:%M} ${color red}  ${time %a, }${color purple}  ${time %b %d %G}${color green}  KW${time %U}${color black}$font$hr
+$hr
+${color d5d9dc}RAM:$color$alignc$memperc%$alignr$mem/$memmax
+${membar 4}
+${color d5d9dc}Swap:$color$alignc$swapperc%$alignr$swap/$swapmax
+${swapbar 4}
+${color black}$hr
+${if_mounted /boot}${color d5d9dc}Boot system: $alignr$color${fs_used /boot}/${fs_size /boot}
+${fs_bar 6 /boot}${endif}
+${if_mounted /}${color d5d9dc}Root system: $alignr$color${fs_used /}/${fs_size /}
+${fs_bar 6 /}${endif}
+${if_mounted /home}${color d5d9dc}Home system: $alignr$color${fs_used /home}/${fs_size /home}
+${fs_bar 6 /home}${endif}
+${if_mounted /var}${color d5d9dc}Var system: $alignr$color${fs_used /var}/${fs_size /var}
+${fs_bar 6 /var}${endif}
+${color d5d9dc}read.IO: ${color 577484}$diskio_read$alignr${color 577484}$diskio_write ${color d5d9dc}:write.IO
+${diskiograph_read 32,150 FF1493 FF0000}$alignr${diskiograph_write 32,150 FF1493 FF0000}
+${color black}$hr
+${color d5d9dc}${battery_time}${alignc}        Battery${alignr}${exec upower -i /org/freedesktop/UPower/devices/line_power_AC | perl -lne 'printf "%dh %dm %ds", (gmtime $1)[2,1,0] if (m((\d+) seconds ago))'}
+$color${battery_bar}
+${color black}$hr
+${color d5d9dc}CPU 1:$color  ${cpu cpu0}% $alignr $color ${cpu cpu1}% ${color d5d9dc}: CPU 2
+${color red}${cpugraph cpu0 32,110 FF1493 FF0000}  $alignr${color red}${cpugraph cpu1 32,100 FF1493 FF0000}
+${color d5d9dc}CPU 3:$color  ${cpu cpu2}% $alignr $color ${cpu cpu3}% ${color d5d9dc}: CPU 4
+${color red}${cpugraph cpu2 32,110 FF1493 FF0000}  $alignr${color red}${cpugraph cpu3 32,100 FF1493 FF0000}
+${if_up eth0}${color d5d9dc}eth0:${color black}$hr
+${color d5d9dc}UpSpeed: $color${upspeed eth0}      $alignr${downspeed eth0} ${color d5d9dc}:DownSpeed
+${color}${upspeedgraph eth0 32,150 FF1493 FF0000} $alignr${color}${downspeedgraph eth0 32,150 FF1493 FF0000}
+${endif}${if_up wlan0}${color d5d9dc}wlan0:${color black}$hr
+${color d5d9dc}ESSID: $color${execi 60 /sbin/iwconfig wlan0 | grep -o 'ESSID:.*' | cut -d'"' -f2}
+${color d5d9dc}UpSpeed: $color${upspeed wlan0}      $alignr${downspeed wlan0} ${color d5d9dc}:DownSpeed
+${color}${upspeedgraph wlan0 20,150 FF1493 FF0000} $alignr${color}${downspeedgraph wlan0 20,150 FF1493 FF0000}
+${endif}${if_up enp0s20u2}${color d5d9dc}enp0s20u2:${color black}$hr
+${color d5d9dc}UpSpeed: $color${upspeed enp0s20u2}      $alignr${downspeed enp0s20u2} ${color d5d9dc}:DownSpeed
+${color}${upspeedgraph enp0s20u2 32,150 FF1493 FF0000} $alignr${color}${downspeedgraph enp0s20u2 32,150 FF1493 FF0000}
+${endif}${color black}$hr
+${color d5d9dc}UP (Uptime): $color${if_up eth0}${totalup eth0}$alignr${totaldown eth0}${endif}${if_up wlan0}${totalup wlan0}$alignr${totaldown wlan0}${endif}${if_up enp0s29u1u5}${totalup enp0s29u1u5}$alignr${totaldown enp0s29u1u5}${endif}${color d5d9dc} :(Uptime) DOWN
+${color d5d9dc}UP (Month): ${color 577484}${if_up eth0}${execi 300 vnstat -i eth0 -m | grep "`date +" '%y"`" | tail -n1 |awk '{print $6 $7}'}$alignr${execi 300 vnstat -i eth0 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $3 $4}'}${endif}${if_up wlan0}${execi 300 vnstat -i wlan0 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $6 $7}'}$alignr${execi 300 vnstat -i wlan0 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $3 $4}'}${endif}${if_up enp0s29u1u5}${execi 300 vnstat -i enp0s29u1u5 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $6 $7}'}$alignr${execi 300 vnstat -i enp0s29u1u5 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $3 $4}'}${endif}${color d5d9dc} :(Month) DOWN
+${color d5d9dc}UP (All): ${color 577484}${if_up eth0}${execi 300 vnstat -i eth0 | sed -n '5p' | cut -d' ' -f22-23}$alignr${execi 300 vnstat -i eth0 | sed -n '5p' | cut -d' ' -f13-14}${endif}${if_up wlan0}${execi 300 vnstat -i wlan0 | sed -n '5p' | cut -d' ' -f22-23}$alignr${execi 300 vnstat -i wlan0 | sed -n '5p' | cut -d' ' -f13-14}${endif}${if_up enp0s20u2}${execi 300 vnstat -i enp0s20u2 | sed -n '5p' | cut -d' ' -f22-23}$alignr${execi 300 vnstat -i enp0s20u2 | sed -n '5p' | cut -d' ' -f13-14}${endif}${color d5d9dc} :(All) DOWN
+${color d5d9dc}I-IP: ${color 577484}${if_up eth0}${addr eth0}${endif}${if_up wlan0}${addr wlan0}${endif}${if_up enp0s20u2}${addr enp0s20u2}${endif}$alignr${execi 360 curl ipinfo.io/ip}${color d5d9dc}: E-IP
+${color black}$hr
+${color d5d9dc}Name                       PID         CPU %        MEM %
+${color 577484}${top name 1}          ${top pid 1}      ${top cpu 1}      ${top mem 1}
+${color 577484}${top name 2}          ${top pid 2}      ${top cpu 2}      ${top mem 2}
+${color 577484}${top name 3}          ${top pid 3}      ${top cpu 3}      ${top mem 3}
+${color 577484}${top name 4}          ${top pid 4}      ${top cpu 4}      ${top mem 4}
+${color 577484}${top name 5}          ${top pid 5}      ${top cpu 5}      ${top mem 5}
+
+${color d5d9dc}Processes:$color $processes  ${color d5d9dc}Running:$color $running_processes
+
+]]

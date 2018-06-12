@@ -5,15 +5,15 @@ function sec_check_http_trace_enabled() {
 
     if [ "$host" = "" ]; then
         echo "Usage: check_http_trace_enabled host:port [ssl]"
-	return
+    return
     fi
 
     if [ "$ssl" != "" ]; then
         HTTP="--insecure https"
-	OUTTXT="$host SSL"
+    OUTTXT="$host SSL"
     else
         HTTP="http"
-	OUTTXT="$host NOSSL"
+    OUTTXT="$host NOSSL"
     fi
 
     CURLBASE="curl --connect-timeout 10 -v -X TRACE"

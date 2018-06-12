@@ -1,4 +1,6 @@
 # sec function helpers
+
+# Check if HTTP method TRACE is enabled
 function sec_check_http_trace_enabled() {
     host="$1"
     ssl="$2"
@@ -27,3 +29,4 @@ function sec_check_http_trace_enabled() {
     fi
     echo "$OUTTXT $OUTRETURN"
 }
+

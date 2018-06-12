@@ -86,4 +86,8 @@ function h3lp () {
     echo "  xx4hBashIsSources                      | return 0 if there are sources, return 1 if there are no sources"
     echo "  xTelnet                                | telnet replacement if telnet is not installed"
     echo ""
+    echo "Sec Helpers"
+
+    # ugly as hell, rewrite! at least a little bit...
+    grep -B 1 '^function ' ~/.bash.xx4h.d/*-sec_helpers.bash | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
 }

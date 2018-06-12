@@ -65,6 +65,15 @@ function xx4hBashTempDisableHomeGitParse() {
     export XX4H_DISABLE_GIT_PARSE_USER_HOME=1
 }
 
+function xTelnet() {
+    ( echo "import telnetlib"
+      echo "if telnetlib.Telnet('$1', $2):"
+      echo "    print('Reachable.')"
+      echo "else:"
+      echo "    print('Unreachable.')"
+    ) | python
+}
+
 function h3lp () {
     echo "Some tools:"
     echo "  xx4hBashGetSourceOrder                 | List source order of .bash files"
@@ -75,5 +84,6 @@ function h3lp () {
     echo ""
     echo "Some functions:"
     echo "  xx4hBashIsSources                      | return 0 if there are sources, return 1 if there are no sources"
+    echo "  xTelnet                                | telnet replacement if telnet is not installed"
     echo ""
 }

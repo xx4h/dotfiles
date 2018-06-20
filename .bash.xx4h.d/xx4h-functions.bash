@@ -74,6 +74,18 @@ function xTelnet() {
     ) | python
 }
 
+function getIP() {
+    curl https://ip.secu.re.it
+}
+
+function getIPv4() {
+    curl -4 https://ip.secu.re.it 2>/dev/null || echo "You don't have an IPv4?!?"
+}
+
+function getIPv6() {
+    curl -6 https://ip.secu.re.it 2>/dev/null || echo "You don't have an IPv6?!?"
+}
+
 function h3lp () {
     echo "Some tools:"
     echo "  xx4hBashGetSourceOrder                 | List source order of .bash files"
@@ -85,6 +97,9 @@ function h3lp () {
     echo "Some functions:"
     echo "  xx4hBashIsSources                      | return 0 if there are sources, return 1 if there are no sources"
     echo "  xTelnet                                | telnet replacement if telnet is not installed"
+    echo "  getIP                                  | Get current IP (whichever is prefered by your system, IPv4 or IPv6)"
+    echo "  getIPv4                                | Get current IPv4"
+    echo "  getIPv6                                | Get current IPv6"
     echo ""
     echo "Sec Helpers"
 

@@ -30,3 +30,11 @@ function sec_check_http_trace_enabled() {
     echo "$OUTTXT $OUTRETURN"
 }
 
+# Return all Glue Records for given Domain
+function sec_get_glue_records() {
+    domain="$(echo $1 | sed 's/\.$//')"
+
+    ns_to_ask=$(dig +short $(echo $domain | awk -F. '{print $NF}') NS|head -n1)
+
+    dig +norec @$ns_to_ask $domain. NS | perl -lne 'print if (m(;; ADDITIONAL SECTION:) .. m(^$))' | egrep -v '^(;;.*|)$'
+}

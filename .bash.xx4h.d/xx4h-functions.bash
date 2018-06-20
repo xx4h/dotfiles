@@ -74,17 +74,24 @@ function xTelnet() {
     ) | python
 }
 
+## prepare for getIP/getIPv4/getIPv6
+GET_IP_URL="https://ip.secu.re.it"
+GET_IP_CMD="curl -s $GET_IP_URL"
+
 function getIP() {
-    curl https://ip.secu.re.it
+    $GET_IP_CMD
 }
+alias myip='getIP'
 
 function getIPv4() {
-    curl -4 https://ip.secu.re.it 2>/dev/null || echo "You don't have an IPv4?!?"
+    $GET_IP_CMD -4 2>/dev/null || echo "You don't have an IPv4?!?"
 }
+alias myip4='getIPv4'
 
 function getIPv6() {
-    curl -6 https://ip.secu.re.it 2>/dev/null || echo "You don't have an IPv6?!?"
+    $GET_IP_CMD -6 2>/dev/null || echo "You don't have an IPv6?!?"
 }
+alias myip6='getIPv6'
 
 function h3lp () {
     echo "Some tools:"
@@ -97,9 +104,9 @@ function h3lp () {
     echo "Some functions:"
     echo "  xx4hBashIsSources                      | return 0 if there are sources, return 1 if there are no sources"
     echo "  xTelnet                                | telnet replacement if telnet is not installed"
-    echo "  getIP                                  | Get current IP (whichever is prefered by your system, IPv4 or IPv6)"
-    echo "  getIPv4                                | Get current IPv4"
-    echo "  getIPv6                                | Get current IPv6"
+    echo "  getIP / myip                           | Get current IP (whichever is prefered by your system, IPv4 or IPv6)"
+    echo "  getIPv4 / myip4                        | Get current IPv4"
+    echo "  getIPv6 / myip6                        | Get current IPv6"
     echo ""
     echo "Sec Helpers"
 

@@ -65,7 +65,7 @@ function xx4hBashTempDisableHomeGitParse() {
     export XX4H_DISABLE_GIT_PARSE_USER_HOME=1
 }
 
-function xTelnet() {
+function xtelnet() {
     ( echo "import telnetlib"
       echo "if telnetlib.Telnet('$1', $2):"
       echo "    print('Reachable.')"
@@ -103,7 +103,7 @@ function h3lp () {
     echo ""
     echo "Some functions:"
     echo "  xx4hBashIsSources                      | return 0 if there are sources, return 1 if there are no sources"
-    echo "  xTelnet                                | telnet replacement if telnet is not installed"
+    echo "  xtelnet                                | telnet replacement if telnet is not installed"
     echo "  getIP / myip                           | Get current IP (whichever is prefered by your system, IPv4 or IPv6)"
     echo "  getIPv4 / myip4                        | Get current IPv4"
     echo "  getIPv6 / myip6                        | Get current IPv6"

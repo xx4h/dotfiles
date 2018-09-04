@@ -38,3 +38,19 @@ function sec_get_glue_records() {
 
     dig +norec @$ns_to_ask $domain. NS | perl -lne 'print if (m(;; ADDITIONAL SECTION:) .. m(^$))' | egrep -v '^(;;.*|)$'
 }
+
+# Return certificate in fulltext from https site (no SNI)
+function sec_get_fulltext_cert_nosni() {
+    NAME=${1//:*}
+    PORT=${1//*:}
+    [ -n "$PORT" ] && PORT=443
+    echo | openssl s_client -connect "${NAME}:${PORT}" 2>/dev/null | perl -lne 'if (m(^-----BEGIN.*) .. m(^-----END.*)) {print $_}' | openssl x509 -noout -text
+}
+
+# Return certificate in fulltext from https site (SNI)
+function sec_get_fulltext_cert_sni() {
+    NAME=${1//:*}
+    PORT=${1//*:}
+    [ -n "$PORT" ] && PORT=443
+    echo | openssl s_client -connect "${NAME}:${PORT}" -servername "${NAME}" 2>/dev/null | perl -lne 'if (m(^-----BEGIN.*) .. m(^-----END.*)) {print $_}' | openssl x509 -noout -text
+}

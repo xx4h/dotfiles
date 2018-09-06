@@ -54,3 +54,23 @@ function sec_get_fulltext_cert_sni() {
     [ -n "$PORT" ] && PORT=443
     echo | openssl s_client -connect "${NAME}:${PORT}" -servername "${NAME}" 2>/dev/null | perl -lne 'if (m(^-----BEGIN.*) .. m(^-----END.*)) {print $_}' | openssl x509 -noout -text
 }
+
+# Return encoded url
+urlencode() {
+    # urlencode <string>
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:i:1}"
+        case $c in
+            [a-zA-Z0-9.~_-]) printf "$c" ;;
+            *) printf '%%%02X' "'$c"
+        esac
+    done
+}
+
+# Return decoded url
+function urldecode() {
+    : "${*//+/ }"
+    echo -e "${_//%/\\x}"
+}
+

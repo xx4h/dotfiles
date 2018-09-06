@@ -112,4 +112,11 @@ function h3lp () {
 
     # ugly as hell, rewrite! at least a little bit...
     grep -B 1 '^function ' ~/.bash.xx4h.d/*-sec_helpers.bash | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
+
+    echo ""
+    echo "Misc Helpers"
+
+    # ugly as hell, rewrite! at least a little bit...
+    grep -B 1 '^function ' ~/.bash.xx4h.d/*-misc_helpers.bash | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
+
 }

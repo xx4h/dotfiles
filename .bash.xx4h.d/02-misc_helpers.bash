@@ -23,6 +23,7 @@ function urlencode() {
             *) printf '%%%02X' "'$c"
         esac
     done
+    echo
 }
 
 # Return decoded url

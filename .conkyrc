@@ -58,8 +58,6 @@ ${font DejaVu Sans Mono:size=12}${color orange}   ${time %H:%M} ${color red}  ${
 $hr
 ${color d5d9dc}RAM:$color$alignc$memperc%$alignr$mem/$memmax
 ${membar 4}
-${color d5d9dc}Swap:$color$alignc$swapperc%$alignr$swap/$swapmax
-${swapbar 4}
 ${color black}$hr
 ${if_mounted /boot}${color d5d9dc}Boot system: $alignr$color${fs_used /boot}/${fs_size /boot}
 ${fs_bar 6 /boot}${endif}
@@ -74,6 +72,8 @@ ${diskiograph_read 32,150 FF1493 FF0000}$alignr${diskiograph_write 32,150 FF1493
 ${color black}$hr
 ${color d5d9dc}${battery_time}${alignc}        Battery${alignr}${exec upower -i /org/freedesktop/UPower/devices/line_power_AC | perl -lne 'printf "%dh %dm %ds", (gmtime $1)[2,1,0] if (m((\d+) seconds ago))'}
 $color${battery_bar}
+${color black}$hr
+${color d5d9dc}ACPI temp: $color $alignr ${acpitemp} °C
 ${color black}$hr
 ${color d5d9dc}CPU 1:$color  ${cpu cpu0}% $alignr $color ${cpu cpu1}% ${color d5d9dc}: CPU 2
 ${color red}${cpugraph cpu0 32,110 FF1493 FF0000}  $alignr${color red}${cpugraph cpu1 32,100 FF1493 FF0000}
@@ -93,7 +93,7 @@ ${endif}${color black}$hr
 ${color d5d9dc}UP (Uptime): $color${if_up eth0}${totalup eth0}$alignr${totaldown eth0}${endif}${if_up wlan0}${totalup wlan0}$alignr${totaldown wlan0}${endif}${if_up enp0s29u1u5}${totalup enp0s29u1u5}$alignr${totaldown enp0s29u1u5}${endif}${color d5d9dc} :(Uptime) DOWN
 ${color d5d9dc}UP (Month): ${color 577484}${if_up eth0}${execi 300 vnstat -i eth0 -m | grep "`date +" '%y"`" | tail -n1 |awk '{print $6 $7}'}$alignr${execi 300 vnstat -i eth0 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $3 $4}'}${endif}${if_up wlan0}${execi 300 vnstat -i wlan0 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $6 $7}'}$alignr${execi 300 vnstat -i wlan0 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $3 $4}'}${endif}${if_up enp0s29u1u5}${execi 300 vnstat -i enp0s29u1u5 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $6 $7}'}$alignr${execi 300 vnstat -i enp0s29u1u5 -m | grep "`date +" '%y"`" | tail -n1 | awk '{print $3 $4}'}${endif}${color d5d9dc} :(Month) DOWN
 ${color d5d9dc}UP (All): ${color 577484}${if_up eth0}${execi 300 vnstat -i eth0 | sed -n '5p' | cut -d' ' -f22-23}$alignr${execi 300 vnstat -i eth0 | sed -n '5p' | cut -d' ' -f13-14}${endif}${if_up wlan0}${execi 300 vnstat -i wlan0 | sed -n '5p' | cut -d' ' -f22-23}$alignr${execi 300 vnstat -i wlan0 | sed -n '5p' | cut -d' ' -f13-14}${endif}${if_up enp0s20u2}${execi 300 vnstat -i enp0s20u2 | sed -n '5p' | cut -d' ' -f22-23}$alignr${execi 300 vnstat -i enp0s20u2 | sed -n '5p' | cut -d' ' -f13-14}${endif}${color d5d9dc} :(All) DOWN
-${color d5d9dc}I-IP: ${color 577484}${if_up eth0}${addr eth0}${endif}${if_up wlan0}${addr wlan0}${endif}${if_up enp0s20u2}${addr enp0s20u2}${endif}$alignr${execi 360 curl ipinfo.io/ip}${color d5d9dc}: E-IP
+${color d5d9dc}I-IP: ${color 577484}${if_up eth0}${addr eth0}${endif}${if_up wlan0}${addr wlan0}${endif}${if_up enp0s20u2}${addr enp0s20u2}${endif}$alignr${execi 60 curl ip.secu.re.it}${color d5d9dc}: E-IP
 ${color black}$hr
 ${color d5d9dc}Name                       PID         CPU %        MEM %
 ${color 577484}${top name 1}          ${top pid 1}      ${top cpu 1}      ${top mem 1}

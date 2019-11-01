@@ -55,3 +55,7 @@ function sec_get_fulltext_cert_sni() {
     echo | openssl s_client -connect "${NAME}:${PORT}" -servername "${NAME}" 2>/dev/null | perl -lne 'if (m(^-----BEGIN.*) .. m(^-----END.*)) {print $_}' | openssl x509 -noout -text
 }
 
+# Get a list of all online hosts in the given net
+function sec_get_given_net_online_hosts() {
+    nmap -n -sn $1 -oG - | awk '/Up$/{print $2}'
+}

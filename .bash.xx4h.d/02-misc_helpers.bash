@@ -32,3 +32,8 @@ function urldecode() {
     echo -e "${_//%/\\x}"
 }
 
+# Pretty print json
+function pjson() {
+          python -m json.tool
+}
+

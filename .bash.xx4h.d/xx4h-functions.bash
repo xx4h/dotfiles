@@ -67,9 +67,10 @@ function xx4hBashTempDisableHomeGitParse() {
 
 function xtelnet() {
     ( echo "import telnetlib"
-      echo "if telnetlib.Telnet('$1', $2):"
+      echo "try:"
+      echo "    telnetlib.Telnet('$1', $2, 2)"
       echo "    print('Reachable.')"
-      echo "else:"
+      echo "except:"
       echo "    print('Unreachable.')"
     ) | python
 }

@@ -94,7 +94,7 @@ if folder == os.path.expanduser('~'+os.environ['USER']) and xx4h_disable_git_par
     # do nothing
     sys.exit(0)
 else:
-    folder = folder.split('/')[-1].rstrip()
+    folder = folder.decode().split('/')[-1].rstrip()
 
 # collect git status information
 untracked, staged, changed, conflicts = [], [], [], []

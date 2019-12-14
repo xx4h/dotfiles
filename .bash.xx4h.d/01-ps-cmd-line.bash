@@ -5,11 +5,24 @@ function parse_git_branch {
     GIT_CLEAN="$(echo "${GIT_STATUS}" | sed -n 9p)"
     if [ -n "$GIT_BRANCH" ]; then
         if [ "$GIT_CLEAN" -ne 1 ]; then
-            echo '\342\224\200[\[\033[1;33m\]✗\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;36m\]]\342\224\200[\[\033[0;93m\]'"$GIT_FOLDER"'\[\033[0;31m\]]'
+            echo '\[\033[0;36m\]\342\224\200[\[\033[1;33m\]✗\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;36m\]]\342\224\200[\[\033[0;93m\]'"$GIT_FOLDER"'\[\033[0;36m\]]'
         else
-            echo '\342\224\200[\[\033[1;32m\]✓\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;36m\]]\342\224\200[\[\033[0;93m\]'"$GIT_FOLDER"'\[\033[0;31m\]]'
+            echo '\[\033[0;36m\]\342\224\200[\[\033[1;32m\]✓\[\033[0;36m\]]\342\224\200[\[\033[0;33m\]'"$GIT_BRANCH"'\[\033[0;36m\]]\342\224\200[\[\033[0;93m\]'"$GIT_FOLDER"'\[\033[0;36m\]]'
         fi
     fi
+}
+
+# Thanks to https://stackoverflow.com/questions/10406926/how-do-i-change-the-default-virtualenv-prompt
+function parse_virtualenv {
+    # Get Virtual Env
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        # Strip out the path and just leave the env name
+        venv="${VIRTUAL_ENV##*/}"
+    else
+        # In case you don't have one activated
+        venv=''
+    fi
+    [[ -n "$venv" ]] && echo '\[\e[34m\]\342\224\200[\[\033[0;94m\]'"$venv"'\]\[\e[34m\]]'
 }
 
 function set_prompt() {
@@ -24,7 +37,7 @@ function set_prompt() {
     # ─[0] while 0 is the count of background jobs in the current shell
     PS1="${PS1}${RED}]\342\224\200[${TEXT_BOLD}\j${COLOR_NONE}${RED}]"
     # ─[✗]─[BRANCH]─[GIT_BASE_FOLDER]─[~] (if current path is in git) or ─[~] AND a new line, which creates the two-line PS1
-    PS1="${PS1}$(parse_git_branch)\342\224\200[${GREEN}\w${RED}]\n"
+    PS1="${PS1}$(parse_virtualenv)$(parse_git_branch)${RED}\342\224\200[${GREEN}\w${RED}]\n"
     # └──╼ $
     PS1="${PS1}${RED}\342\224\224\342\224\200\342\224\200\342\225\274 ${COLOR_NONE}${LIGHT_YELLOW}\\$ ${COLOR_NONE}"
 }

@@ -133,6 +133,7 @@ Cut and paste
     dd - delete (cut) a line
     2dd - delete (cut) 2 lines
     dw - delete (cut) the characters of the word from the cursor position to the start of the next word
+    diw - delete (cut) current word
     D - delete (cut) to the end of the line
     d$ - delete (cut) to the end of the line
     x - delete (cut) character

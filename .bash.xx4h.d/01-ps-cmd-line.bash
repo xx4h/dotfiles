@@ -22,7 +22,19 @@ function parse_virtualenv {
         # In case you don't have one activated
         venv=''
     fi
-    [[ -n "$venv" ]] && echo '\[\e[34m\]\342\224\200[\[\033[0;94m\]'"$venv"'\]\[\e[34m\]]'
+    [[ -n "$venv" ]] && echo '\[\e[34m\]\342\224\200[\[\033[0;93m\]venv\[\e[34m\]]\342\224\200[\[\033[0;94m\]'"$venv"'\]\[\e[34m\]]'
+}
+
+function parse_nodeenv {
+    # Get nodeenv
+    if [[ -n "$NODE_VIRTUAL_ENV" ]]; then
+        # Strip out the path and just leave the env name
+        nenv="${NODE_VIRTUAL_ENV##*/}"
+    else
+        # In case you don't have one activated
+        nenv=''
+    fi
+    [[ -n "$nenv" ]] && echo '\[\e[34m\]\342\224\200[\[\033[0;93m\]nenv\[\e[34m\]]\342\224\200[\[\033[0;94m\]'"$nenv"'\]\[\e[34m\]]'
 }
 
 function set_prompt() {
@@ -37,7 +49,7 @@ function set_prompt() {
     # ─[0] while 0 is the count of background jobs in the current shell
     PS1="${PS1}${RED}]\342\224\200[${TEXT_BOLD}\j${COLOR_NONE}${RED}]"
     # ─[✗]─[BRANCH]─[GIT_BASE_FOLDER]─[~] (if current path is in git) or ─[~] AND a new line, which creates the two-line PS1
-    PS1="${PS1}$(parse_virtualenv)$(parse_git_branch)${RED}\342\224\200[${GREEN}\w${RED}]\n"
+    PS1="${PS1}$(parse_virtualenv)$(parse_nodeenv)$(parse_git_branch)${RED}\342\224\200[${GREEN}\w${RED}]\n"
     # └──╼ $
     PS1="${PS1}${RED}\342\224\224\342\224\200\342\224\200\342\225\274 ${COLOR_NONE}${LIGHT_YELLOW}\\$ ${COLOR_NONE}"
 }

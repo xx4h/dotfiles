@@ -59,3 +59,19 @@ function sec_get_fulltext_cert_sni() {
 function sec_get_given_net_online_hosts() {
     nmap -n -sn $1 -oG - | awk '/Up$/{print $2}'
 }
+
+# Verfiy that private key matches a certificate
+function sec_verify_cert_key() {
+    CERT=`openssl x509 -noout -modulus -in "$1" | sha256sum`
+    KEY=`openssl rsa -noout -modulus -in "$2" | sha256sum`
+    if [ "$CERT" == "$KEY" ]; then
+        echo "Match"
+    else
+        echo "No Match"
+    fi
+}
+
+# Verify that certificate matches CA
+function sec_verify_cert_ca() {
+    openssl verify -CAfile "$2" "$1"
+}

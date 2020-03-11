@@ -29,6 +29,13 @@ HISTFILESIZE=999999
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# source pre.bashrc.d
+for rc_file in ~/.pre.bashrc.d/*.bash; do
+    if ! [[ "$rc_file" =~ \*\.bash$ ]]; then
+        . "$rc_file"
+    fi
+done
+
 # source xx4h bash stuff
 for rc_file in ~/.bash.xx4h.d/*.bash; do
     if ! [[ "$rc_file" =~ \*\.bash$ ]]; then

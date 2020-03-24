@@ -37,3 +37,5 @@ function pjson() {
           python -m json.tool
 }
 
+# alembic python3
+alias alembic3='python -m alembic.config'

@@ -12,6 +12,11 @@ function parse_git_branch {
     fi
 }
 
+function parse_kubernetes {
+    kuber_context="$(kubectl config current-context)"
+    [[ -n "$kuber_context" ]] && echo '\[\e[34m\]\342\224\200[\[\033[0;93m\]kube\[\e[34m\]]\342\224\200[\[\033[0;94m\]'"$kuber_context"'\]\[\e[34m\]]'
+}
+
 # Thanks to https://stackoverflow.com/questions/10406926/how-do-i-change-the-default-virtualenv-prompt
 function parse_virtualenv {
     # Get Virtual Env
@@ -49,7 +54,7 @@ function set_prompt() {
     # ─[0] while 0 is the count of background jobs in the current shell
     PS1="${PS1}${RED}]\342\224\200[${TEXT_BOLD}\j${COLOR_NONE}${RED}]"
     # ─[✗]─[BRANCH]─[GIT_BASE_FOLDER]─[~] (if current path is in git) or ─[~] AND a new line, which creates the two-line PS1
-    PS1="${PS1}$(parse_virtualenv)$(parse_nodeenv)$(parse_git_branch)${RED}\342\224\200[${GREEN}\w${RED}]\n"
+    PS1="${PS1}$(parse_virtualenv)$(parse_nodeenv)$(parse_kubernetes)$(parse_git_branch)${RED}\342\224\200[${GREEN}\w${RED}]\n"
     # └──╼ $
     PS1="${PS1}${RED}\342\224\224\342\224\200\342\224\200\342\225\274 ${COLOR_NONE}${LIGHT_YELLOW}\\$ ${COLOR_NONE}"
 }

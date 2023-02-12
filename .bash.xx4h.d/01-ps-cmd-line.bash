@@ -13,7 +13,9 @@ function parse_git_branch {
 }
 
 function parse_kubernetes {
-    kuber_context="$(kubectl config current-context)"
+    if which kubectl >/dev/null; then
+        kuber_context="$(kubectl config current-context)"
+    fi
     [[ -n "$kuber_context" ]] && echo '\[\e[34m\]\342\224\200[\[\033[0;93m\]kube\[\e[34m\]]\342\224\200[\[\033[0;94m\]'"$kuber_context"'\]\[\e[34m\]]'
 }
 

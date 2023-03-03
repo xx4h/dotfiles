@@ -78,3 +78,8 @@ function 3pointmen() {
         python -c "print( ((4.95/( 1.10938 - (0.0008267 * $sum) + (0.0000016 * $sum**2) - (0.0002574 * $age))) - 4.5) * 100)"
     fi
 }
+
+# check if ipv6 ip is in ipv6 network
+function check_ipv6_ip_ipv6_net() {
+    python -c "import ipaddress; print(ipaddress.ip_address('$1') in ipaddress.ip_network('$2'))"
+}

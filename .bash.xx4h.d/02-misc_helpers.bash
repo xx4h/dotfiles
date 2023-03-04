@@ -83,3 +83,20 @@ function 3pointmen() {
 function check_ipv6_ip_ipv6_net() {
     python -c "import ipaddress; print(ipaddress.ip_address('$1') in ipaddress.ip_network('$2'))"
 }
+
+# force delete kubernetes namespace hanging in finalizer
+function kubernetes_delete_namespace_finalizer() {
+  namespace="$1"
+  cat <<EOF | curl -X PUT localhost:8001/api/v1/namespaces/${namespace}/finalize -H "Content-Type: application/json" --data-binary @-
+{
+  "kind": "Namespace",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "${namespace}"
+  },
+  "spec": {
+    "finalizers": null
+  }
+}
+EOF
+}

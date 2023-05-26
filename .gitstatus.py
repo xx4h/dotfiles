@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 """This module defines a Print function to use with python 2.x or 3.x., so we can use the prompt with older versions of

@@ -81,93 +81,97 @@ def get_folder():
     return so.rstrip()
 
 
-# `git status --porcelain --branch` can collect all information
-# branch, remote_branch, untracked, staged, changed, conflicts, ahead, behind
-po = Popen(['git', 'status', '--porcelain', '--branch'], env={'LC_ALL': 'C'}, stdout=PIPE, stderr=PIPE)
-stdout, stderr = po.communicate()
-if po.returncode != 0:
-    sys.exit(0)  # Not a git repository
+def main():
+    # `git status --porcelain --branch` can collect all information
+    # branch, remote_branch, untracked, staged, changed, conflicts, ahead, behind
+    po = Popen(['git', 'status', '--porcelain', '--branch'], env={'LC_ALL': 'C'}, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = po.communicate()
+    if po.returncode != 0:
+        sys.exit(0)  # Not a git repository
 
-folder = get_folder()
-xx4h_disable_git_parse_user_home = os.environ.get('XX4H_DISABLE_GIT_PARSE_USER_HOME', '0')
-if folder == os.path.expanduser('~'+os.environ['USER']) and xx4h_disable_git_parse_user_home != '0':
-    # do nothing
-    sys.exit(0)
-else:
-    folder = folder.decode().split('/')[-1].rstrip()
-
-# collect git status information
-untracked, staged, changed, conflicts = [], [], [], []
-num_ahead, num_behind = 0, 0
-ahead, behind = '', ''
-branch = ''
-remote = ''
-status = [(line[0], line[1], line[2:]) for line in stdout.decode('utf-8').splitlines()]
-for st in status:
-    if st[0] == '#' and st[1] == '#':
-        if re.search('Initial commit on', st[2]):
-            branch = st[2].split(' ')[-1]
-        elif re.search('No commits yet on', st[2]):
-            branch = st[2].split(' ')[-1]
-        elif re.search('no branch', st[2]):  # detached status
-            branch = get_tag_or_hash()
-        elif len(st[2].strip().split('...')) == 1:
-            branch = st[2].strip()
-        else:
-            # current and remote branch info
-            branch, rest = st[2].strip().split('...')
-            if len(rest.split(' ')) == 1:
-                # remote_branch = rest.split(' ')[0]
-                pass
-            else:
-                # ahead or behind
-                divergence = ' '.join(rest.split(' ')[1:])
-                divergence = divergence.lstrip('[').rstrip(']')
-                for div in divergence.split(', '):
-                    if 'ahead' in div:
-                        num_ahead = int(div[len('ahead '):].strip())
-                        ahead = '%s%s' % (symbols['ahead of'], num_ahead)
-                    elif 'behind' in div:
-                        num_behind = int(div[len('behind '):].strip())
-                        behind = '%s%s' % (symbols['behind'], num_behind)
-                remote = ''.join([behind, ahead])
-    elif st[0] == '?' and st[1] == '?':
-        untracked.append(st)
+    folder = get_folder()
+    xx4h_disable_git_parse_user_home = os.environ.get('XX4H_DISABLE_GIT_PARSE_USER_HOME', '0')
+    if folder == os.path.expanduser('~'+os.environ['USER']) and xx4h_disable_git_parse_user_home != '0':
+        # do nothing
+        sys.exit(0)
     else:
-        if st[1] == 'M':
-            changed.append(st)
-        if st[0] == 'U':
-            conflicts.append(st)
-        elif st[0] != ' ':
-            staged.append(st)
+        folder = folder.decode().split('/')[-1].rstrip()
 
-stashed = get_stash()
-if not changed and not staged and not conflicts and not untracked and not stashed:
-    clean = 1
-else:
-    clean = 0
+    # collect git status information
+    untracked, staged, changed, conflicts = [], [], [], []
+    num_ahead, num_behind = 0, 0
+    ahead, behind = '', ''
+    branch = ''
+    remote = ''
+    status = [(line[0], line[1], line[2:]) for line in stdout.decode('utf-8').splitlines()]
+    for st in status:
+        if st[0] == '#' and st[1] == '#':
+            if re.search('Initial commit on', st[2]):
+                branch = st[2].split(' ')[-1]
+            elif re.search('No commits yet on', st[2]):
+                branch = st[2].split(' ')[-1]
+            elif re.search('no branch', st[2]):  # detached status
+                branch = get_tag_or_hash()
+            elif len(st[2].strip().split('...')) == 1:
+                branch = st[2].strip()
+            else:
+                # current and remote branch info
+                branch, rest = st[2].strip().split('...')
+                if len(rest.split(' ')) == 1:
+                    # remote_branch = rest.split(' ')[0]
+                    pass
+                else:
+                    # ahead or behind
+                    divergence = ' '.join(rest.split(' ')[1:])
+                    divergence = divergence.lstrip('[').rstrip(']')
+                    for div in divergence.split(', '):
+                        if 'ahead' in div:
+                            num_ahead = int(div[len('ahead '):].strip())
+                            ahead = '%s%s' % (symbols['ahead of'], num_ahead)
+                        elif 'behind' in div:
+                            num_behind = int(div[len('behind '):].strip())
+                            behind = '%s%s' % (symbols['behind'], num_behind)
+                    remote = ''.join([behind, ahead])
+        elif st[0] == '?' and st[1] == '?':
+            untracked.append(st)
+        else:
+            if st[1] == 'M':
+                changed.append(st)
+            if st[0] == 'U':
+                conflicts.append(st)
+            elif st[0] != ' ':
+                staged.append(st)
 
-if remote == "":
-    remote = '.'
+    stashed = get_stash()
+    if not changed and not staged and not conflicts and not untracked and not stashed:
+        clean = 1
+    else:
+        clean = 0
 
-if python_version == 2:
-    remote = remote.decode('utf-8')
+    if remote == "":
+        remote = '.'
 
-out = '\n'.join([
-    folder,
-    branch,
-    remote,
-    to_str(len(staged)),
-    to_str(len(conflicts)),
-    to_str(len(changed)),
-    to_str(len(untracked)),
-    to_str(stashed),
-    to_str(clean),
-    to_str(python_version),
-])
+    if python_version == 2:
+        remote = remote.decode('utf-8')
+
+    out = '\n'.join([
+        folder,
+        branch,
+        remote,
+        to_str(len(staged)),
+        to_str(len(conflicts)),
+        to_str(len(changed)),
+        to_str(len(untracked)),
+        to_str(stashed),
+        to_str(clean),
+        to_str(python_version),
+    ])
 
 
-if python_version == 2:
-    Print(out.encode('utf-8'))
-else:
-    Print(out)
+    if python_version == 2:
+        Print(out.encode('utf-8'))
+    else:
+        Print(out)
+
+if __name__ == "__main__":
+    main()

@@ -100,3 +100,12 @@ function kubernetes_delete_namespace_finalizer() {
 }
 EOF
 }
+
+# clean and reset git repo with recursive submodules
+function git_clean_reset_sub_recursive() {
+  git clean -xfd
+  git submodule foreach --recursive git clean -xfd
+  git reset --hard
+  git submodule foreach --recursive git reset --hard
+  git submodule update --init --recursive
+}

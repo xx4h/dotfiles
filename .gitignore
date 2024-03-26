@@ -1,5 +1,23 @@
+# Ignore files and folders starting from where .gitignore is originating from
 /*
-!/.bash.xx4h.d/
+
+# Include some root folder files
 !.gitignore
 !.bashrc
 !.gitstatus.py
+!.tmux.conf
+
+# Include bash.xx4h.d
+!.bash.xx4h.d/
+
+# handle .config folders we want to include
+## enable complete .config
+!.config/
+## disable complete .config subree again
+.config/*
+
+## begin { .config subfolders we want to include {
+!.config/tmux-powerline/
+!.config/nvim/
+## end } .config subfolders we want to include
+

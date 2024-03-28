@@ -252,6 +252,25 @@
 # vcs_branch.sh {
 	# Max length of the branch name.
 	export TMUX_POWERLINE_SEG_VCS_BRANCH_MAX_LEN="24"
+	# Branch symbol for git repositories
+	# export TMUX_POWERLINE_SEG_VCS_BRANCH_GIT_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
+	# Branch symbol for hg/mercurial repositories
+	# export TMUX_POWERLINE_SEG_VCS_BRANCH_HG_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
+	# Branch symbol for SVN repositories
+	# export TMUX_POWERLINE_SEG_VCS_BRANCH_SVN_SYMBOL="${TMUX_POWERLINE_SEG_VCS_BRANCH_DEFAULT_SYMBOL}"
+	# Branch symbol colour for git repositories
+	# Branch symbol colour for git repositories
+	export TMUX_POWERLINE_SEG_VCS_BRANCH_GIT_SYMBOL_COLOUR="202"
+	# Branch symbol colour for hg/mercurial repositories
+	export TMUX_POWERLINE_SEG_VCS_BRANCH_HG_SYMBOL_COLOUR="250"
+	# Branch symbol colour for SVN repositories
+	export TMUX_POWERLINE_SEG_VCS_BRANCH_SVN_SYMBOL_COLOUR="15"
+# }
+
+# vcs_rootpath.sh {
+	# Display mode for vcs_rootpath.
+	# Example: (1: full path, w/o expansion; 2: full path, w/ tilde expansion; 3: folder name only)
+	export TMUX_POWERLINE_SEG_VCS_ROOTPATH_MODE="1"
 # }
 
 # weather.sh {

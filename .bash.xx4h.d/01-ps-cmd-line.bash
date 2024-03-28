@@ -1,4 +1,5 @@
 function parse_git_branch {
+    [ "${XX4H_DISABLE_GIT_PARSE}" = "1" ] && return
     GIT_STATUS="$(~/.gitstatus.py 2>/dev/null)"
     GIT_FOLDER="$(echo "${GIT_STATUS}" | sed -n 1p)"
     GIT_BRANCH="$(echo "${GIT_STATUS}" | sed -n 2p)"
@@ -13,6 +14,7 @@ function parse_git_branch {
 }
 
 function parse_kubernetes {
+    [ "${XX4H_DISABLE_KUBERNETES_PARSE}" = "1" ] && return
     if [ -f ~/.kube/config ]; then
         kuber_context="$(egrep '^current-context: ' ~/.kube/config | awk '{print $2}')"
     fi
@@ -21,6 +23,7 @@ function parse_kubernetes {
 
 # Thanks to https://stackoverflow.com/questions/10406926/how-do-i-change-the-default-virtualenv-prompt
 function parse_virtualenv {
+    [ "${XX4H_DISABLE_VIRTUALENV_PARSE}" = "1" ] && return
     # Get Virtual Env
     if [[ -n "$VIRTUAL_ENV" ]]; then
         # Strip out the path and just leave the env name
@@ -33,6 +36,7 @@ function parse_virtualenv {
 }
 
 function parse_nodeenv {
+    [ "${XX4H_DISABLE_NODEENV_PARSE}" = "1" ] && return
     # Get nodeenv
     if [[ -n "$NODE_VIRTUAL_ENV" ]]; then
         # Strip out the path and just leave the env name

@@ -1,6 +1,6 @@
 function parse_git_branch {
     [ "${XX4H_DISABLE_GIT_PARSE}" = "1" ] && return
-    GIT_ROOTPATH="$(git rev-parse --show-toplevel)"
+    GIT_ROOTPATH="$(git rev-parse --show-toplevel 2>/dev/null)"
     if [ $? -ne 0 ]; then
       return
     fi

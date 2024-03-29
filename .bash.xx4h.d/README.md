@@ -2,7 +2,7 @@
 ## Getting started
 Just add the following at the end of your `.bashrc`
 ```
-source ~/.bashrc.xx4h
+source ~/.xx4h.bash
 ```
 
 ## How it works

@@ -3,7 +3,7 @@
 
 # Include some root folder files
 !.gitignore
-!.bashrc.xx4h
+!.xx4h.bash
 !.gitstatus.py
 !.tmux.conf
 

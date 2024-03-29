@@ -1,5 +1,10 @@
 function parse_git_branch {
     [ "${XX4H_DISABLE_GIT_PARSE}" = "1" ] && return
+    GIT_ROOTPATH="$(git rev-parse --show-toplevel)"
+    if [ $? -ne 0 ]; then
+      return
+    fi
+    [ "${XX4H_DISABLE_GIT_PARSE_USER_HOME}" = "1" ] && [ "${GIT_ROOTPATH}" = "$HOME" ] && return
     GIT_STATUS="$(~/.gitstatus.py 2>/dev/null)"
     GIT_FOLDER="$(echo "${GIT_STATUS}" | sed -n 1p)"
     GIT_BRANCH="$(echo "${GIT_STATUS}" | sed -n 2p)"

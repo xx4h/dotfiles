@@ -12,6 +12,10 @@ return {
     opts = require "configs.nvimtree",
   },
 
+  {
+    "hrsh7th/nvim-cmp",
+    opts = require "configs.cmp",
+  },
   -- These are some examples, uncomment them if you want to see them work!
   -- {
   --   "neovim/nvim-lspconfig",

@@ -19,27 +19,27 @@
 	# The initial visibility of the status bar. Can be {"on, off", "2"}.
 	export TMUX_POWERLINE_STATUS_VISIBILITY="2"
 	# In case of visibility 2, where to display windows status and where left/right status bars
+	# 0: window status top, left/right status bottom; 1: window status bottom, left/right status top
 	export TMUX_POWERLINE_WINDOW_STATUS_LINE=0
-	export TMUX_POWERLINE_OTHER_STATUS_LINE=1
 	# The status bar refresh interval in seconds.
 	# Note that events that force-refresh the status bar (such as window renaming) will ignore this.
 	export TMUX_POWERLINE_STATUS_INTERVAL="1"
 	# The location of the window list. Can be {"absolute-centre, centre, left, right"}.
 	# Note that "absolute-centre" is only supported on `tmux -V` >= 3.2.
-	export TMUX_POWERLINE_STATUS_JUSTIFICATION="centre"
+	export TMUX_POWERLINE_STATUS_JUSTIFICATION="absolute-centre"
 
 	# The maximum length of the left status bar.
-	export TMUX_POWERLINE_STATUS_LEFT_LENGTH="60"
+	export TMUX_POWERLINE_STATUS_LEFT_LENGTH="0"
 	# The maximum length of the right status bar.
-	export TMUX_POWERLINE_STATUS_RIGHT_LENGTH="90"
+	export TMUX_POWERLINE_STATUS_RIGHT_LENGTH="0"
 
 	# The separator to use between windows on the status bar.
 	export TMUX_POWERLINE_WINDOW_STATUS_SEPARATOR=""
 
 	# Uncomment these if you want to enable tmux bindings for muting (hiding) one of the status bars.
 	# E.g. this example binding would mute the left status bar when pressing <prefix> followed by Ctrl-[
-	#export TMUX_POWERLINE_MUTE_LEFT_KEYBINDING="C-["
-	#export TMUX_POWERLINE_MUTE_RIGHT_KEYBINDING="C-]"
+	# export TMUX_POWERLINE_MUTE_LEFT_KEYBINDING="C-["
+	# export TMUX_POWERLINE_MUTE_RIGHT_KEYBINDING="C-]"
 # }
 
 # air.sh {

@@ -11,3 +11,10 @@ vim.opt.mouse = "a"
 vim.opt.mousemoveevent = true
 vim.opt.foldenable = false
 vim.opt.foldmethod = "syntax"
+vim.opt.listchars = {
+  tab = "> ",
+  trail = "+",
+  -- eol = "$",
+  -- extends = "",
+  -- precedes = "",
+}

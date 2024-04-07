@@ -69,6 +69,12 @@
 	export TMUX_POWERLINE_SEG_DATE_FORMAT="%F"
 # }
 
+# date_week.sh {
+	# Symbol for calendar week.
+	# export TMUX_POWERLINE_SEG_DATE_WEEK_SYMBOL="󰨳"
+	export TMUX_POWERLINE_SEG_DATE_WEEK_SYMBOL_COLOUR="0"
+# }
+
 # disk_usage.sh {
 	# Filesystem to retrieve disk space information. Any from the filesystems available (run "df | awk '{print }'" to check them).
 	export TMUX_POWERLINE_SEG_DISK_USAGE_FILESYSTEM="/"
@@ -174,11 +180,12 @@
 	# File to be read in case the song is being read from a file
 	export TMUX_POWERLINE_SEG_NOW_PLAYING_FILE_NAME=""
 	# Maximum output length.
-	export TMUX_POWERLINE_SEG_NOW_PLAYING_MAX_LEN="40"
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_MAX_LEN="30"
 	# How to handle too long strings. Can be {trim, roll}.
-	export TMUX_POWERLINE_SEG_NOW_PLAYING_TRIM_METHOD="trim"
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_TRIM_METHOD="roll"
 	# Charcters per second to roll if rolling trim method is used.
 	export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_SPEED="2"
+	export TMUX_POWERLINE_SEG_NOW_PLAYING_ROLL_MODE="repeat"
 	
 	# Hostname for MPD server in the format "[password@]host"
 	export TMUX_POWERLINE_SEG_NOW_PLAYING_MPD_HOST="localhost"
@@ -221,7 +228,7 @@
 
 # pwd.sh {
 	# Maximum length of output.
-	export TMUX_POWERLINE_SEG_PWD_MAX_LEN="40"
+	export TMUX_POWERLINE_SEG_PWD_MAX_LEN="120"
 # }
 
 # time.sh {

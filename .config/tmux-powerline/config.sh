@@ -51,10 +51,10 @@
 	export TMUX_POWERLINE_SEG_AIR_JSON="jq"
 	# Your location
 	# Latitude and Longitude:
-	TMUX_POWERLINE_SEG_AIR_LAT=""
-	TMUX_POWERLINE_SEG_AIR_LON=""
+	# TMUX_POWERLINE_SEG_AIR_LAT=""
+	# TMUX_POWERLINE_SEG_AIR_LON=""
 	# Your Open Weather API Key:
-	TMUX_POWERLINE_SEG_AIR_OPEN_WEATHER_API_KEY=""
+	# TMUX_POWERLINE_SEG_AIR_OPEN_WEATHER_API_KEY=""
 # }
 
 # battery.sh {
@@ -66,6 +66,7 @@
 
 # date.sh {
 	# date(1) format for the date. If you don't, for some reason, like ISO 8601 format you might want to have "%D" or "%m/%d/%Y".
+	# export TMUX_POWERLINE_SEG_DATE_FORMAT="%F"
 	export TMUX_POWERLINE_SEG_DATE_FORMAT="%F"
 # }
 
@@ -105,6 +106,13 @@
 # hostname.sh {
 	# Use short or long format for the hostname. Can be {"short, long"}.
 	export TMUX_POWERLINE_SEG_HOSTNAME_FORMAT="short"
+# }
+
+# lan_ip.sh {
+	# Symbol for LAN IP.
+	# export TMUX_POWERLINE_SEG_LAN_IP_SYMBOL="ⓛ "
+	# Symbol colour for LAN IP
+	# export TMUX_POWERLINE_SEG_LAN_IP_SYMBOL_COLOUR="255"
 # }
 
 # macos_notification_count.sh {
@@ -274,10 +282,28 @@
 	export TMUX_POWERLINE_SEG_VCS_BRANCH_SVN_SYMBOL_COLOUR="15"
 # }
 
+# vcs_compare.sh {
+	# Symbol if local branch is behind.
+	# export TMUX_POWERLINE_SEG_VCS_COMPARE_AHEAD_SYMBOL="↑ "
+	# Symbol colour if local branch is ahead. Defaults to "current segment foreground colour"
+	# export TMUX_POWERLINE_SEG_VCS_COMPARE_AHEAD_SYMBOL_COLOUR=""
+	# Symbol if local branch is ahead.
+	# export TMUX_POWERLINE_SEG_VCS_COMPARE_BEHIND_SYMBOL="↓ "
+	# Symbol colour if local branch is behind. Defaults to "current segment foreground colour"
+	# export TMUX_POWERLINE_SEG_VCS_COMPARE_BEHIND_SYMBOL_COLOUR="0"
+# }
+
 # vcs_rootpath.sh {
 	# Display mode for vcs_rootpath.
 	# Example: (1: full path, w/o expansion; 2: full path, w/ tilde expansion; 3: folder name only)
 	export TMUX_POWERLINE_SEG_VCS_ROOTPATH_MODE="1"
+# }
+
+# wan_ip.sh {
+	# Symbol for WAN IP
+	# export TMUX_POWERLINE_SEG_WAN_IP_SYMBOL="ⓦ "
+	# Symbol colour for WAN IP
+	# export TMUX_POWERLINE_SEG_WAN_IP_SYMBOL_COLOUR="255"
 # }
 
 # weather.sh {
@@ -293,8 +319,8 @@
 	export TMUX_POWERLINE_SEG_WEATHER_JSON="jq"
 	# Your location
 	# Latitude and Longtitude for use with yr.no
-	TMUX_POWERLINE_SEG_WEATHER_LAT="${MY_TMUX_POWERLINE_SEG_WEATHER_LAT}"
-	TMUX_POWERLINE_SEG_WEATHER_LON="${MY_TMUX_POWERLINE_SEG_WEATHER_LON}"
+	export TMUX_POWERLINE_SEG_WEATHER_LAT="${MY_TMUX_POWERLINE_SEG_WEATHER_LAT}"
+	export TMUX_POWERLINE_SEG_WEATHER_LON="${MY_TMUX_POWERLINE_SEG_WEATHER_LON}"
 # }
 
 # xkb_layout.sh {

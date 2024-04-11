@@ -129,7 +129,7 @@
 
 # mailcount.sh {
 	# Mailbox type to use. Can be any of {apple_mail, gmail, maildir, mbox, mailcheck}
-	export TMUX_POWERLINE_SEG_MAILCOUNT_MAILBOX_TYPE=""
+	# export TMUX_POWERLINE_SEG_MAILCOUNT_MAILBOX_TYPE=""
 	
 	## Gmail
 	# Enter your Gmail username here WITH OUT @gmail.com.( OR @domain)
@@ -148,7 +148,7 @@
 	
 	## Maildir
 	# Path to the maildir to check.
-	export TMUX_POWERLINE_SEG_MAILCOUNT_MAILDIR_INBOX="/home/xx4h/.mail/inbox/new"
+	# export TMUX_POWERLINE_SEG_MAILCOUNT_MAILDIR_INBOX="/home/USER/.mail/inbox/new"
 	
 	## mbox
 	# Path to the mbox to check.
@@ -156,7 +156,7 @@
 	
 	## mailcheck
 	# Optional path to mailcheckrc
-	export TMUX_POWERLINE_SEG_MAILCOUNT_MAILCHECKRC="/home/xx4h/.mailcheckrc"
+	# export TMUX_POWERLINE_SEG_MAILCOUNT_MAILCHECKRC="/home/USER/.mailcheckrc"
 # }
 
 # mode_indicator.sh {
@@ -178,6 +178,9 @@
 	# Copy mode text & color overrides. Defaults to "copy" & the segment foreground color set in the theme used.
 	export TMUX_POWERLINE_SEG_MODE_INDICATOR_COPY_MODE_TEXT="copy"
 	export TMUX_POWERLINE_SEG_MODE_INDICATOR_COPY_MODE_TEXT_COLOR=""
+	# Suspend mode text & color overrides. Defaults to "SUSPEND" & the segment foreground color set in the theme used.
+	export TMUX_POWERLINE_SEG_MODE_INDICATOR_SUSPEND_MODE_TEXT="#[bold]suspend#[nobold]"
+	export TMUX_POWERLINE_SEG_MODE_INDICATOR_SUSPEND_MODE_TEXT_COLOR=""
 	# Separator text override. Defaults to " • ".
 	export TMUX_POWERLINE_SEG_MODE_INDICATOR_SEPARATOR_TEXT=" • "
 # }

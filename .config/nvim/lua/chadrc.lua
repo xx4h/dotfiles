@@ -5,7 +5,7 @@ local M = {}
 local highlights = require "highlights"
 
 M.ui = {
-  theme = "onedark",
+  theme = "gatekeeper",
   theme_toggle = { "onedark", "gatekeeper", "bearded-arc" },
 
   hl_override = highlights.override,
@@ -19,7 +19,7 @@ M.ui = {
     float = {
       relative = "editor",
       row = 0.05,
-      col = 0.075,
+      col = 0.1,
       width = 0.8,
       height = 0.8,
       border = "single",

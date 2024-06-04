@@ -20,7 +20,7 @@ function sec_check_http_trace_enabled() {
 
     CURLBASE="curl --connect-timeout 10 -v -X TRACE"
 
-    OUTPUT="$($CURLBASE $HTTP://$host 2>&1 | egrep '^< HTTP/1.1')"
+    OUTPUT="$($CURLBASE $HTTP://$host 2>&1 | grep -E '^< HTTP/1.1')"
 
     if [ "$OUTPUT" = "" ]; then
             OUTRETURN="NORETURN"
@@ -36,7 +36,7 @@ function sec_get_glue_records() {
 
     ns_to_ask=$(dig +short $(echo $domain | awk -F. '{print $NF}') NS|head -n1)
 
-    dig +norec @$ns_to_ask $domain. NS | perl -lne 'print if (m(;; ADDITIONAL SECTION:) .. m(^$))' | egrep -v '^(;;.*|)$'
+    dig +norec @$ns_to_ask $domain. NS | perl -lne 'print if (m(;; ADDITIONAL SECTION:) .. m(^$))' | grep -Ev '^(;;.*|)$'
 }
 
 # Return certificate in fulltext from https site (no SNI)

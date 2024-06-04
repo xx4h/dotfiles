@@ -21,7 +21,7 @@ function parse_git_branch {
 function parse_kubernetes {
     [ "${XX4H_DISABLE_KUBERNETES_PARSE}" = "1" ] && return
     if [ -f ~/.kube/config ]; then
-        kuber_context="$(egrep '^current-context: ' ~/.kube/config | awk '{print $2}')"
+        kuber_context="$(grep -E '^current-context: ' ~/.kube/config | awk '{print $2}')"
     fi
     [[ -n "$kuber_context" ]] && echo '\[\e[34m\]\342\224\200[\[\033[0;93m\]kube\[\e[34m\]]\342\224\200[\[\033[0;94m\]'"$kuber_context"'\]\[\e[34m\]]'
 }

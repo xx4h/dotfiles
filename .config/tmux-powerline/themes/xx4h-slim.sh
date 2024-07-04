@@ -110,7 +110,7 @@ fi
 
 if [ -z "$TMUX_POWERLINE_LEFT_STATUS_SEGMENTS" ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
-		"status_icon 148 234 '' '' '' '' separator_disable"
+		"status_icon 148 234 default_separator no_sep_bg_color no_sep_fg_color no_spacing_disable separator_disable"
 		"tmux_session_info 148 234"
 		"hostname 33 0"
 		"vpn 39 0"
@@ -145,11 +145,16 @@ if [ -z "$TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS" ]; then
 		"weather 45 0"
 		#"rainbarf 0 ${TMUX_POWERLINE_DEFAULT_FOREGROUND_COLOR}"
 		#"xkb_layout 125 117"
-		"date_week 39 0"
-		"date_day 39 0 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
-		"date 39 0 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
-		"time 39 0 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
+		"date_week 39 0 default_separator no_sep_bg_color no_sep_fg_color right_disable"
+		"date_day 39 0 󰿟 no_sep_bg_color 45 both_disable"
+		"date 39 0 󰿟 no_sep_bg_color 45 both_disable"
+		"time 39 0 󰿟 no_sep_bg_color 45 left_disable"
+		#"date_week 39 0"
+		#"date_day 39 0 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN} no_sep_bg_color 33"
+		#"date 39 0 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN} no_sep_bg_color 33"
+		#"time 39 0 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN} no_sep_bg_color 33"
 		#"utc_time 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}"
 		"mode_indicator 33 0"
+		"github_notifications 148 234"
 	)
 fi

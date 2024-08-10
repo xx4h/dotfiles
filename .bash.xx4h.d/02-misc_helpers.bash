@@ -109,3 +109,48 @@ function git_clean_reset_sub_recursive() {
   git submodule foreach --recursive git reset --hard
   git submodule update --init --recursive
 }
+
+function _xx4h_asdf() {
+  local tool
+  local version
+  local location
+  local plugin_list
+  local found
+
+  location=$1
+  tool=$2
+  version=${3:-latest}
+  found=no
+
+  plugin_list=$(asdf plugin list all)
+
+  while read -r plugin; do
+    read -r name repo <<<"$plugin"
+    if [ "$name" = "$tool" ]; then
+      found=yes
+      asdf plugin add "$name" "$repo"
+      asdf install "$name" "$version"
+      asdf "$location" "$name" "$version"
+      break
+    fi
+  done <<<"$plugin_list"
+  if [ "$found" = "no" ]; then
+    echo "Tool $tool not found."
+    while read -r plugin; do
+      echo "Did you mean:"
+      echo "  $plugin"
+    done < <(echo "$plugin_list" | grep -E "^[^\s]*${tool}[^\s]* .*")
+  fi
+}
+
+# Add plugin, install version, set global version in asdf in one step
+function globalasdf() {
+  _xx4h_asdf "global" "$@"
+}
+
+# Add plugin, install version, set local version in asdf in one step
+function localasdf() {
+  _xx4h_asdf "local" "$@"
+}
+
+

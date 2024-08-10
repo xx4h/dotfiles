@@ -6,6 +6,8 @@
 !.xx4h.bash
 !.gitstatus.py
 !.tmux.conf
+## configure asdf tool versions
+!.tool-versions
 
 # Include bash.xx4h.d
 !.bash.xx4h.d/

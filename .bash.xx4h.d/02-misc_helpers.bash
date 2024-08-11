@@ -110,7 +110,7 @@ function git_clean_reset_sub_recursive() {
   git submodule update --init --recursive
 }
 
-function _xx4h_asdf() {
+function _xx4h_asdf_manage() {
   local tool
   local version
   local location
@@ -139,18 +139,60 @@ function _xx4h_asdf() {
     while read -r plugin; do
       echo "Did you mean:"
       echo "  $plugin"
-    done < <(echo "$plugin_list" | grep -E "^[^\s]*${tool}[^\s]* .*")
+    done < <(echo "$plugin_list" | grep -E "^[^[:space:]]*${tool}[^[:space:]]* .*")
   fi
 }
 
-# Add plugin, install version, set global version in asdf in one step
-function globalasdf() {
-  _xx4h_asdf "global" "$@"
+function _xx4h_asdf_plugin_global() {
+  while read -r plugin; do
+    if asdf plugin add "$plugin" >/dev/null 2>&1; then
+      echo "Plugin successfully installed: $plugin"
+    else
+      echo "Plugin could not be installed: $plugin"
+    fi
+  done < <(awk '{ print $1 }' ~/.tool-versions)
 }
 
-# Add plugin, install version, set local version in asdf in one step
-function localasdf() {
-  _xx4h_asdf "local" "$@"
+function _xx4h_asdf_plugin_search() {
+  tool=$1
+  asdf plugin list all | grep -E "^[^[:space:]]*${tool}[^[:space:]]*"
 }
 
+function _xx4h_asdf_manage_global() {
+  _xx4h_asdf_manage "global" "$@"
+}
 
+function _xx4h_asdf_manage_local() {
+  _xx4h_asdf_manage "local" "$@"
+}
+
+function _xx4h_asdf_help() {
+  echo "Help for asdf xx4h patched sub commands:"
+  echo "  asdf gmanage [latest|VERSION]          | add plugin, install version and set global version"
+  echo "  asdf lmanage [latest|VERSION]          | add plugin, install version and set local version"
+  echo "  asdf search SEARCH                     | search for plugin"
+  echo "  asdf gplugin                           | install all plugins for global .tool-versions"
+  echo "  asdf xhelp                             | this help"
+}
+
+# Wrapper function for asdf, adding some additional functions, see "xasdf xhelp" for details
+function xasdf() {
+  sub=$1
+  if [ "$sub" = "gmanage" ]; then
+    shift
+    _xx4h_asdf_manage_global "$@"
+  elif [ "$sub" = "lmanage" ]; then
+    shift
+    _xx4h_asdf_manage_local "$@"
+  elif [ "$sub" = "gplugin" ]; then
+    shift
+    _xx4h_asdf_plugin_global "$@"
+  elif [ "$sub" = "search" ]; then
+    shift
+    _xx4h_asdf_plugin_search "$@"
+  elif [ "$sub" = "xhelp" ]; then
+    _xx4h_asdf_help
+  else
+    asdf "$@"
+  fi
+}

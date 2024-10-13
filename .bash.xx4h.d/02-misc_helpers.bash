@@ -122,8 +122,7 @@ function _xx4h_asdf_manage() {
   version=${3:-latest}
   found=no
 
-  plugin_list=$(asdf plugin list all)
-
+  local_plugin_list=$(asdf plugin list)
   while read -r plugin; do
     read -r name repo <<<"$plugin"
     if [ "$name" = "$tool" ]; then
@@ -133,7 +132,23 @@ function _xx4h_asdf_manage() {
       asdf "$location" "$name" "$version"
       break
     fi
-  done <<<"$plugin_list"
+  done <<<"$local_plugin_list"
+
+  if [ "$found" = "no" ]; then
+    plugin_list=$(asdf plugin list all)
+
+    while read -r plugin; do
+      read -r name repo <<<"$plugin"
+      if [ "$name" = "$tool" ]; then
+        found=yes
+        asdf plugin add "$name" "$repo"
+        asdf install "$name" "$version"
+        asdf "$location" "$name" "$version"
+        break
+      fi
+    done <<<"$plugin_list"
+  fi
+
   if [ "$found" = "no" ]; then
     echo "Tool $tool not found."
     while read -r plugin; do

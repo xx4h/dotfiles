@@ -17,3 +17,12 @@ terraform 1.9.4
 trivy 0.54.1
 vault 1.17.3+ent
 yj 5.1.0
+crane 0.20.2
+golang 1.22.7
+kustomize 5.4.3
+weave-gitops 0.38.0
+velero 1.14.0
+opentofu 1.8.1
+goreleaser 2.3.2
+hctl 0.3.2
+tokei 12.1.2

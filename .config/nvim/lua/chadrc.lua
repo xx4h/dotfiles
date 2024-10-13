@@ -4,7 +4,7 @@ local M = {}
 -- Path to overriding theme and highlights files
 local highlights = require "highlights"
 
-M.ui = {
+M.base46 = {
   theme = "gatekeeper",
   theme_toggle = { "onedark", "gatekeeper", "bearded-arc" },
 
@@ -15,17 +15,20 @@ M.ui = {
     theme = "vscode_colored"
   },
 
-  term = {
-    float = {
-      relative = "editor",
-      row = 0.05,
-      col = 0.1,
-      width = 0.8,
-      height = 0.8,
-      border = "single",
-    },
-  },
+}
 
+M.term = {
+  float = {
+    relative = "editor",
+    row = 0.05,
+    col = 0.1,
+    width = 0.8,
+    height = 0.8,
+    border = "single",
+  },
+}
+
+M.ui = {
   tabufline = {
     order = { "treeOffset", "buffers", "tabs", "btns"},
     -- order = { "treeOffset", "buffers", "tabs", "btns", 'abc'},

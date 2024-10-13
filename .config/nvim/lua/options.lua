@@ -6,7 +6,7 @@ require "nvchad.options"
 -- o.cursorlineopt ='both' -- to enable cursorline!
 
 -- disable mouse
-vim.opt.mouse = "a"
+vim.opt.mouse = ""
 -- enable mouseevents
 vim.opt.mousemoveevent = true
 vim.opt.foldenable = false

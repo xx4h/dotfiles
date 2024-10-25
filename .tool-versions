@@ -2,7 +2,7 @@ dive 0.12.0
 flux2 2.3.0
 github-cli 2.54.0
 glab 1.45.0
-golangci-lint 1.59.1
+golangci-lint 1.61.0
 helm 3.15.3
 hugo 0.131.0
 k9s 0.32.5
@@ -24,5 +24,5 @@ weave-gitops 0.38.0
 velero 1.14.0
 opentofu 1.8.1
 goreleaser 2.3.2
-hctl 0.3.2
+hctl 0.5.0
 tokei 12.1.2

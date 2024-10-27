@@ -6,7 +6,7 @@ local highlights = require "highlights"
 
 M.base46 = {
   theme = "gatekeeper",
-  theme_toggle = { "onedark", "gatekeeper", "bearded-arc" },
+  theme_toggle = { "gatekeeper", "bearded-arc" },
 
   hl_override = highlights.override,
   hl_add = highlights.add,

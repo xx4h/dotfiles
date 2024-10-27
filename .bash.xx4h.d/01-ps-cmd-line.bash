@@ -4,6 +4,7 @@ pre_secondline="\342\224\224"
 pre_input="\342\225\274"
 bad_exitcode="✗"
 good_exitcode="✓"
+
 function parse_git_branch {
     [ "${XX4H_DISABLE_GIT_PARSE}" = "1" ] && return
     if ! GIT_ROOTPATH="$(git rev-parse --show-toplevel 2>/dev/null)"; then

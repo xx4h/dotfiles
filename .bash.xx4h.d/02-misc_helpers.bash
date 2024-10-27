@@ -37,6 +37,30 @@ function pjson() {
           python -m json.tool
 }
 
+# activate venv (order: ~/.venv, ~/.virtualenvs)
+function venv() {
+    local venv
+    local venv_dirs
+    venv_dirs="$HOME/.venv $HOME/.virtualenvs"
+    if [ -z "$1" ]; then
+      echo "Usage: venv NAME"
+      return
+    fi
+    venv=$1
+    for dir in $venv_dirs; do
+      if [ -d "$dir/$venv" ]; then
+        activate="$dir/$venv/bin/activate"
+        if [ -f "$activate" ]; then
+          echo "Enabling VirtualEnv $dir/$venv"
+          source "$activate"
+        else
+          echo "Found VirtualEnv $dir/$venv, but no bin/activate"
+          return
+        fi
+      fi
+    done
+}
+
 # alembic python3
 alias alembic3='python -m alembic.config'
 

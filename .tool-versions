@@ -26,3 +26,4 @@ opentofu 1.8.1
 goreleaser 2.3.2
 hctl 0.7.0
 tokei 12.1.2
+gcloud 529.0.0

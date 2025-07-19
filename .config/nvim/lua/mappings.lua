@@ -22,6 +22,10 @@ end, { desc = "toggle theme "})
 map("n", "<leader>Rr", ":e <CR>", { desc = "Reload Buffer" })
 map("n", "<leader>Rf", ":e! <CR>", { desc = "Reload Buffer (force, drop local changes)" })
 
+map("n", "<leader>wf", function()
+  vim.lsp.buf.format()
+end, { desc = "LSP Run formatter" })
+
 --map({ "n", "t" }, "<A-i>", function()
 --  require("nvchad.term").toggle { pos = "float", id = "floatTerm", width = 0.9, height = 0.9 }
 --end, { desc = "Terminal Toggle Floating term xxx" })

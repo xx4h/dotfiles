@@ -4,7 +4,10 @@ local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
-local servers = { "html", "cssls", "markdown_oxide", "bashls", "golangci_lint_ls" }
+
+-- TODO: find way to share this variable with ../plugins/init.lua
+-- Don't forget to also modify ../plugins/init.lua
+local servers = { "html", "cssls", "markdown_oxide", "bashls", "golangci_lint_ls", "pylsp" }
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do

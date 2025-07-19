@@ -1,3 +1,7 @@
+-- TODO: find way to share this variable with ../configs/lspconfig.lua
+-- Don't forget to also modify ../configs/lspconfig.lua
+local servers = { "html", "cssls", "markdown_oxide", "bashls", "golangci_lint_ls", "pylsp" }
+
 return {
   {
     "stevearc/conform.nvim",
@@ -29,10 +33,7 @@ return {
    {
    	"williamboman/mason.nvim",
    	opts = {
-   		ensure_installed = {
-   			"lua-language-server", "stylua",
-   			"html-lsp", "css-lsp" , "prettier"
-   		},
+      ensure_installed = servers
    	},
    },
 

@@ -4,13 +4,14 @@
 # Include some root folder files
 !.gitignore
 !.xx4h.bash
+!.xx4h.zsh
 !.gitstatus.py
 !.tmux.conf
 ## configure asdf tool versions
 !.tool-versions
 
 # Include bash.xx4h.d
-!.bash.xx4h.d/
+!.shrc.xx4h.d/
 
 # handle .config folders we want to include
 ## enable complete .config
@@ -21,5 +22,6 @@
 ## begin { .config subfolders we want to include {
 !.config/tmux-powerline/
 !.config/nvim/
+!.config/omp/
 ## end } .config subfolders we want to include
 

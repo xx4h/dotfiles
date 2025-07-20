@@ -139,6 +139,7 @@ function _xx4h_asdf_manage() {
   local version
   local location
   local plugin_list
+  local local_plugin_list
   local found
 
   location=$1
@@ -153,7 +154,7 @@ function _xx4h_asdf_manage() {
       found=yes
       asdf plugin add "$name" "$repo"
       asdf install "$name" "$version"
-      asdf "$location" "$name" "$version"
+      asdf set "$location" "$name" "$version"
       break
     fi
   done <<<"$local_plugin_list"
@@ -167,7 +168,7 @@ function _xx4h_asdf_manage() {
         found=yes
         asdf plugin add "$name" "$repo"
         asdf install "$name" "$version"
-        asdf "$location" "$name" "$version"
+        asdf set "$location" "$name" "$version"
         break
       fi
     done <<<"$plugin_list"
@@ -182,7 +183,7 @@ function _xx4h_asdf_manage() {
   fi
 }
 
-function _xx4h_asdf_plugin_global() {
+function _xx4h_asdf_plugin() {
   while read -r plugin; do
     if asdf plugin add "$plugin" >/dev/null 2>&1; then
       echo "Plugin successfully installed: $plugin"
@@ -197,35 +198,37 @@ function _xx4h_asdf_plugin_search() {
   asdf plugin list all | grep -E "^[^[:space:]]*${tool}[^[:space:]]*"
 }
 
-function _xx4h_asdf_manage_global() {
-  _xx4h_asdf_manage "global" "$@"
+function _xx4h_asdf_manage_set_home() {
+  _xx4h_asdf_manage "--home" "$@"
 }
 
-function _xx4h_asdf_manage_local() {
-  _xx4h_asdf_manage "local" "$@"
+function _xx4h_asdf_manage_set() {
+  _xx4h_asdf_manage "" "$@"
 }
 
 function _xx4h_asdf_help() {
   echo "Help for asdf xx4h patched sub commands:"
-  echo "  asdf gmanage [latest|VERSION]          | add plugin, install version and set global version"
-  echo "  asdf lmanage [latest|VERSION]          | add plugin, install version and set local version"
+  echo "  asdf set user [latest|VERSION]         | add plugin, install version and set user global version"
+  echo "  asdf set [latest|VERSION]              | add plugin, install version and set local version"
   echo "  asdf search SEARCH                     | search for plugin"
-  echo "  asdf gplugin                           | install all plugins for global .tool-versions"
+  echo "  asdf plugin                           | install all plugins for global .tool-versions"
   echo "  asdf xhelp                             | this help"
 }
 
 # Wrapper function for asdf, adding some additional functions, see "xasdf xhelp" for details
 function xasdf() {
   sub=$1
-  if [ "$sub" = "gmanage" ]; then
+  subsub=$2
+  if [ "$sub" = "set" ] && [ "$subsub" = "user" ]; then
     shift
-    _xx4h_asdf_manage_global "$@"
-  elif [ "$sub" = "lmanage" ]; then
     shift
-    _xx4h_asdf_manage_local "$@"
+    _xx4h_asdf_manage_set_home "$@"
+  elif [ "$sub" = "set" ]; then
+    shift
+    _xx4h_asdf_manage_set "$@"
   elif [ "$sub" = "gplugin" ]; then
     shift
-    _xx4h_asdf_plugin_global "$@"
+    _xx4h_asdf_plugin "$@"
   elif [ "$sub" = "search" ]; then
     shift
     _xx4h_asdf_plugin_search "$@"

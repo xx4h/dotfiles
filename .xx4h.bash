@@ -30,20 +30,20 @@ HISTFILESIZE=999999
 shopt -s checkwinsize
 
 # source pre.bashrc.d
-for rc_file in ~/.pre.bashrc.d/*.bash; do
+for rc_file in $(find ~/.pre.shrc.d/*.{sh,bash} 2>/dev/null | sort); do
     if ! [[ "$rc_file" =~ \*\.bash$ ]]; then
         . "$rc_file"
     fi
 done
 
 # source xx4h bash stuff
-for rc_file in ~/.bash.xx4h.d/*.bash; do
+for rc_file in $(find ~/.shrc.xx4h.d/*.{sh,bash} 2>/dev/null | sort); do
     if ! [[ "$rc_file" =~ \*\.bash$ ]]; then
         . "$rc_file"
     fi
 done
 
-for rc_file in ~/.bashrc.d/*.bash; do
+for rc_file in $(find ~/.shrc.d/*.{sh,bash} 2>/dev/null | sort); do
     if ! [[ "$rc_file" =~ \*\.bash$ ]]; then
         . "$rc_file"
     fi

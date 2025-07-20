@@ -69,35 +69,6 @@ function xx4hBashReload() {
     source ~/.bashrc
 }
 
-function xtelnet() {
-    ( echo "import telnetlib"
-      echo "try:"
-      echo "    telnetlib.Telnet('$1', $2, 2)"
-      echo "    print('Reachable.')"
-      echo "except:"
-      echo "    print('Unreachable.')"
-    ) | python
-}
-
-## prepare for getIP/getIPv4/getIPv6
-GET_IP_URL="https://ip.secu.re.it"
-GET_IP_CMD="curl -s $GET_IP_URL"
-
-function getIP() {
-    $GET_IP_CMD
-}
-alias myip='getIP'
-
-function getIPv4() {
-    $GET_IP_CMD -4 2>/dev/null || echo "You don't have an IPv4?!?"
-}
-alias myip4='getIPv4'
-
-function getIPv6() {
-    $GET_IP_CMD -6 2>/dev/null || echo "You don't have an IPv6?!?"
-}
-alias myip6='getIPv6'
-
 function h3lp () {
     echo "Some tools:"
     echo "  xx4hBashGetSourceOrder                 | List source order of .bash files"
@@ -118,19 +89,19 @@ function h3lp () {
     echo "Sec Helpers"
 
     # ugly as hell, rewrite! at least a little bit...
-    grep -B 1 '^function ' ~/.bash.xx4h.d/*-sec_helpers.bash | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
+    grep -B 1 '^function ' ~/.shrc.xx4h.d/*-sec_helpers.sh | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
 
     echo ""
     echo "Misc Helpers"
 
     # ugly as hell, rewrite! at least a little bit...
-    grep -B 1 '^function ' ~/.bash.xx4h.d/*-misc_helpers.bash | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
+    grep -B 1 '^function ' ~/.shrc.xx4h.d/*-misc_helpers.sh | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
 
     echo ""
     echo "Cheat Sheets"
 
     # ugly as hell, rewrite! at least a little bit...
-    grep -B 1 '^function ' ~/.bash.xx4h.d/*-cheatsheet-*.bash | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
+    grep -B 1 '^function ' ~/.shrc.xx4h.d/*-cheatsheet-*.sh | perl -ne 'if (m(^#) .. m(^function )) {$line++; if ( $line > 1 ) {$function = $_; chomp $function} else {$help = $_}; if ($function && $help) {$function = $1 if $function =~ /^function\s+([^(]+).*/;$help = $1 if $help =~ /^# (.*)/;printf "  %-38s | %s\n", $function, $help} } else {$line=0; $function=""; $help=""}'
 
     echo ""
     echo "NvChad"

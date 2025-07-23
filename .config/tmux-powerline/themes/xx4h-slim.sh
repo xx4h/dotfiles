@@ -1,8 +1,6 @@
 # Default Theme
 # If changes made here does not take effect, then try to re-create the tmux session to force reload.
 
-TMUX_POWERLINE_SEG_AIR_COLOR="$(air_color)"
-
 TMUX_POWERLINE_SEPARATOR_LEFT_BOLD=""
 TMUX_POWERLINE_SEPARATOR_LEFT_THIN=""
 TMUX_POWERLINE_SEPARATOR_RIGHT_BOLD=""
@@ -59,7 +57,7 @@ fi
 
 if [ -z "$TMUX_POWERLINE_WINDOW_STATUS_STYLE" ]; then
 	TMUX_POWERLINE_WINDOW_STATUS_STYLE=(
-		"$(format regular)"
+		"$(tp_format regular)"
 	)
 fi
 

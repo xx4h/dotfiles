@@ -9,6 +9,10 @@ export TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=$MY_TMUX_POWERLINE_RIGHT_STATUS_SEGM
 # General {
 	# Show which segment fails and its exit code.
 	export TMUX_POWERLINE_DEBUG_MODE_ENABLED="false"
+	# Create error log in tmux runtime temp dir.
+	export TMUX_POWERLINE_ERROR_LOGS_ENABLED="true"
+	# Only log specific scopes. Space separated list of scopes. Supported scopes: weather.sh lib/text_roll.sh lib/powerline.sh lib/colors.sh config/helpers.sh
+	export TMUX_POWERLINE_ERROR_LOGS_SCOPES=""
 	# Use patched font symbols.
 	export TMUX_POWERLINE_PATCHED_FONT_IN_USE="true"
 

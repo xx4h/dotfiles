@@ -92,8 +92,15 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 
 bindkey -e
+bindkey -v
 bindkey "^[." insert-last-word
 bindkey "^[w" kill-region
+
+#{ vim mode
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+#} vim mode
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word

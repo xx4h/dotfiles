@@ -1,5 +1,3 @@
-autoload -Uz compinit && compinit
-
 # source pre.shrc.d
 for rc_file in $(find ~/.pre.shrc.d -name '*.sh' -o -name '*.zsh' 2>/dev/null | sort); do
   source "$rc_file"
@@ -21,86 +19,79 @@ if type brew &>/dev/null; then
 fi
 
 
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
-
 HISTFILE=~/.zsh_history
 HISTSIZE=999999
 SAVEHIST=999999
 
 # append to the history file, don't overwrite it
 setopt  APPEND_HISTORY
+# don't append to history if first character is a space
 setopt  HIST_IGNORE_SPACE
+# remove redundant/needless blanks
 setopt  HIST_REDUCE_BLANKS
+# history expansion into editing buffer instead of direct executing
 setopt  HIST_VERIFY
+# on history write, older duplicate commands are ommited
 setopt  HIST_SAVE_NO_DUPS
+# new command that duplicates older one, older one is removed
 setopt  HIST_IGNORE_ALL_DUPS
-#setopt  HIST_IGNORE_DUPS
-setopt  SHARE_HISTORY
-#setopt  INC_APPEND_HISTORY
+# write & load lines immediately, you basically have the same history on all shell sessions
+# disabled: we don't want immediate reload when we use "atuin", as we already have global
+# history in "strg-r", but use native history for "arrow-up"
+# setopt  SHARE_HISTORY
 setopt  EXTENDED_HISTORY
-#setopt  CORRECT
-#setopt  AUTO_CD
-#setopt  AUTO_LIST
-#setopt  AUTO_MENU
-#setopt  AUTO_PARAM_KEYS
-#setopt  AUTO_PARAM_SLASH
-#setopt  AUTO_PUSHD
-#setopt  AUTO_RESUME
-#setopt  NO_BEEP
-#setopt  BRACE_CCL
-#setopt  EQUALS
-#setopt  NO_FLOW_CONTROL
-#setopt  EXTENDED_GLOB
-#setopt  EXTENDED_HISTORY
-##setopt  HIST_NO_STORE
-#setopt  NO_HUP
-#setopt  INTERACTIVE_COMMENTS
-#setopt  LIST_PACKED
-#setopt  LIST_ROWS_FIRST
-#setopt  LIST_TYPES
-#setopt  LONG_LIST_JOBS
-#setopt  MAGIC_EQUAL_SUBST
-#setopt  MARK_DIRS
-#setopt  MULTIOS
-#setopt  NUMERIC_GLOB_SORT
-#setopt  PRINT_EIGHT_BIT
-#setopt  PROMPT_CR
-#setopt  PROMPT_SUBST
-#setopt  PUSHD_IGNORE_DUPS
-#
-#setopt  RC_EXPAND_PARAM
-#setopt  SHORT_LOOPS
-#setopt  TRANSIENT_RPROMPT
+# allow comments even in interactive shell (alt-#)
+setopt  INTERACTIVE_COMMENTS
 
+
+### ZINIT SECTION ###
+
+#{ ensure zinit is installed and loaded
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+#}
+
+# zsh syntax highlighting {
 zinit light zsh-users/zsh-syntax-highlighting
+
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#bcbcbc'
+# }
+
+
 #zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
 zinit load zdharma-continuum/history-search-multi-word
 
-#{ atuin config
+# atuin {
+# if we change something in ice, we need to "zinit delete atuinsh/atuin"
+# afterwards so it gets reloaded on next zsh exec
 zinit ice as"command" from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" \
-    atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
+    atclone"./atuin init zsh --disable-up-arrow > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
     atpull"%atclone" src"init.zsh"
 zinit light atuinsh/atuin
-#} atuin config
+# }
+
+### END ZINIT SECTION ###
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 
+# enable emacs mode
 bindkey -e
+
+# enable vim mode
 bindkey -v
 bindkey "^[." insert-last-word
 bindkey "^[w" kill-region
 
-#{ vim mode
+# vim mode {
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
-#} vim mode
+# }
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word

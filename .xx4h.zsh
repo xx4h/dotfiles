@@ -1,3 +1,5 @@
+autoload -Uz compinit && compinit
+
 # source pre.shrc.d
 for rc_file in $(find ~/.pre.shrc.d -name '*.sh' -o -name '*.zsh' 2>/dev/null | sort); do
   source "$rc_file"
@@ -115,4 +117,5 @@ zle -N my-backward-delete-word
 # bind this new widget to `ctrl+w`
 bindkey '^[^?' my-backward-delete-word
 
+# TODO: some completions need "compinit" before and some after (e.g. asdf) the completion sourcing
 autoload -Uz compinit && compinit

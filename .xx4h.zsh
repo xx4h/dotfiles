@@ -1,4 +1,5 @@
 autoload -Uz compinit && compinit
+zmodload zsh/complist
 
 # source pre.shrc.d
 for rc_file in $(find ~/.pre.shrc.d -name '*.sh' -o -name '*.zsh' 2>/dev/null | sort); do
@@ -84,17 +85,20 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 # enable emacs mode
 bindkey -e
 
-# enable vim mode
-bindkey -v
+# we also want to reverse jump in completion with shift-tab
+bindkey -M menuselect "^[[Z" reverse-menu-complete
+
+# ESC-. insert last word from last command
 bindkey "^[." insert-last-word
 bindkey "^[w" kill-region
 
-# vim mode {
+# edit commandline with editor {
 autoload -U edit-command-line
 zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
+bindkey "^[v" edit-command-line
 # }
 
+# jump forward and backward a word with strg+arrow
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 

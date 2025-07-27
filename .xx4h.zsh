@@ -88,6 +88,9 @@ bindkey -e
 # we also want to reverse jump in completion with shift-tab
 bindkey -M menuselect "^[[Z" reverse-menu-complete
 
+# insert pound (comment out current cmd line)
+bindkey "^[#" pound-insert
+
 # ESC-. insert last word from last command
 bindkey "^[." insert-last-word
 bindkey "^[w" kill-region

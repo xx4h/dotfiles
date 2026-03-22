@@ -30,3 +30,4 @@ end, { desc = "LSP Run formatter" })
 --  require("nvchad.term").toggle { pos = "float", id = "floatTerm", width = 0.9, height = 0.9 }
 --end, { desc = "Terminal Toggle Floating term xxx" })
 
+map("c", "w!!", require("utils").sudo_write, { silent = true })

@@ -30,7 +30,7 @@ export TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=$MY_TMUX_POWERLINE_RIGHT_STATUS_SEGM
 	export TMUX_POWERLINE_WINDOW_STATUS_LINE=0
 	# The status bar refresh interval in seconds.
 	# Note that events that force-refresh the status bar (such as window renaming) will ignore this.
-	export TMUX_POWERLINE_STATUS_INTERVAL="1"
+	export TMUX_POWERLINE_STATUS_INTERVAL="15"
 	# The location of the window list. Can be {"absolute-centre, centre, left, right"}.
 	# Note that "absolute-centre" is only supported on `tmux -V` >= 3.2.
 	export TMUX_POWERLINE_STATUS_JUSTIFICATION="absolute-centre"

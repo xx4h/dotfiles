@@ -67,15 +67,6 @@ ZSH_HIGHLIGHT_STYLES[comment]='fg=#bcbcbc'
 zinit light zsh-users/zsh-completions
 zinit load zdharma-continuum/history-search-multi-word
 
-# atuin {
-# if we change something in ice, we need to "zinit delete atuinsh/atuin"
-# afterwards so it gets reloaded on next zsh exec
-zinit ice as"command" from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" \
-    atclone"./atuin init zsh --disable-up-arrow > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
-    atpull"%atclone" src"init.zsh"
-zinit light atuinsh/atuin
-# }
-
 ### END ZINIT SECTION ###
 
 zstyle ':completion:*' menu select
@@ -123,6 +114,3 @@ my-backward-delete-word() {
 zle -N my-backward-delete-word
 # bind this new widget to `ctrl+w`
 bindkey '^[^?' my-backward-delete-word
-
-# TODO: some completions need "compinit" before and some after (e.g. asdf) the completion sourcing
-autoload -Uz compinit && compinit

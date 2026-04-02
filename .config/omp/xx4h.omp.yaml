@@ -39,6 +39,17 @@ blocks:
           template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} "
           properties:
             fetch_version: false
+    - type: prompt
+      alignment: right
+      segments:
+        - properties:
+            style: full
+          template: ' {{ .Path }} '
+          type: path
+          style: diamond
+          leading_diamond: "\ue0b2"
+          background: "#8be9fd"
+          foreground: "#100e23"
     - alignment: right
       #type: rprompt
       segments:

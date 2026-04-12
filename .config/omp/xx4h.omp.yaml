@@ -2,9 +2,9 @@
 
 transient_prompt:
     template: >-
-      <blue>at <default>{{ .Segments.Path.Path }}
-      <blue>@ <red>{{ .Segments.Time.CurrentDate | date .Segments.Time.Format }}
-      {{ if .Segments.ExecutionTime.FormattedMs }}<blue>in <red>{{ .Segments.ExecutionTime.FormattedMs }} {{ end }}<blue>><default> 
+      <blue>at <default>{{ if .Segments.Path }}{{ .Segments.Path.Path }}{{ end }}
+      <blue>@ <red>{{ if .Segments.Time }}{{ .Segments.Time.CurrentDate | date .Segments.Time.Format }}{{ end }}
+      {{ if .Segments.ExecutionTime }}{{ if .Segments.ExecutionTime.FormattedMs }}<blue>in <red>{{ .Segments.ExecutionTime.FormattedMs }} {{ end }}{{ end }}<blue>><default>
     foreground: '#ffffff'
     background: transparent
 upgrade:

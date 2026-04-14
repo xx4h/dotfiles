@@ -301,8 +301,10 @@ function tp() {
 
             if $has_socket; then
                 local attached
-                attached=$(tmux -L "$socket" list-sessions -F '#{session_attached}' 2>/dev/null)
-                if [ "$attached" = "1" ]; then
+                if ! attached=$(tmux -L "$socket" list-sessions -F '#{session_attached}' 2>/dev/null); then
+                    # Server not running, start fresh
+                    _tp_new_and_attach
+                elif [ "$attached" = "1" ]; then
                     echo "Project '$project' is already attached elsewhere."
                     echo "  [a] Attach here too (shared)"
                     echo "  [d] Detach other client and attach here"

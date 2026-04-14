@@ -7,6 +7,8 @@
 !.xx4h.zsh
 !.gitstatus.py
 !.tmux.conf
+!.tmux.shared.conf
+!.tmux-project.conf
 ## configure asdf tool versions
 !.tool-versions
 

@@ -216,6 +216,123 @@ function _xx4h_asdf_help() {
 }
 
 # Wrapper function for asdf, adding some additional functions, see "xasdf xhelp" for details
+# tmux project session manager
+# Data stored in ${XDG_DATA_HOME:-$HOME/.local/share}/tmux-project/
+function tp() {
+    local base_dir="${XDG_DATA_HOME:-$HOME/.local/share}/tmux-project"
+    local socket_dir="/tmp/tmux-$(id -u)"
+
+    # Helper: list project sessions with optional state filter
+    _tp_list() {
+        local filter="${1:-all}"  # all, running, attached, detached, stopped
+        local running_projects=()
+
+        # Find running project sockets
+        if [ -d "$socket_dir" ]; then
+            for sock in "$socket_dir"/project-*; do
+                [ -S "$sock" ] || continue
+                local name="${sock##*/project-}"
+                running_projects+=("$name")
+                local state
+                state=$(tmux -L "project-${name}" list-sessions -F '#{session_attached}' 2>/dev/null)
+                case "$filter" in
+                    running|all)  printf "%-20s %s\n" "$name" "$([ "$state" = "1" ] && echo "attached" || echo "detached")" ;;
+                    attached)     [ "$state" = "1" ] && printf "%-20s %s\n" "$name" "attached" ;;
+                    detached)     [ "$state" != "1" ] && printf "%-20s %s\n" "$name" "detached" ;;
+                esac
+            done
+        fi
+
+        # Find stopped projects (data dir exists, no socket)
+        if [ "$filter" = "all" ] || [ "$filter" = "stopped" ]; then
+            if [ -d "$base_dir" ]; then
+                for dir in "$base_dir"/*/; do
+                    [ -d "$dir" ] || continue
+                    local name="${dir%/}"
+                    name="${name##*/}"
+                    local is_running=false
+                    for rp in "${running_projects[@]}"; do
+                        [ "$rp" = "$name" ] && is_running=true && break
+                    done
+                    $is_running || printf "%-20s %s\n" "$name" "stopped"
+                done
+            fi
+        fi
+    }
+
+    case "${1:-}" in
+        -l|--list)     _tp_list all ;;
+        -r|--running)  _tp_list running ;;
+        -a|--attached) _tp_list attached ;;
+        -d|--detached) _tp_list detached ;;
+        -s|--stopped)  _tp_list stopped ;;
+        -h|--help)
+            echo "Usage: tp [OPTIONS] [PROJECT_NAME]"
+            echo ""
+            echo "  tp PROJECT_NAME    Create or attach to project session"
+            echo "  tp -l, --list      List all project sessions"
+            echo "  tp -r, --running   List running sessions (attached + detached)"
+            echo "  tp -a, --attached  List attached sessions"
+            echo "  tp -d, --detached  List detached sessions"
+            echo "  tp -s, --stopped   List stopped sessions (data dir exists, no socket)"
+            echo "  tp -h, --help      Show this help"
+            ;;
+        "")
+            echo "Usage: tp [OPTIONS] PROJECT_NAME (see tp --help)"
+            return 1
+            ;;
+        -*)
+            echo "Unknown option: $1 (see tp --help)"
+            return 1
+            ;;
+        *)
+            local project="$1"
+            local data_dir="${base_dir}/${project}"
+            local socket="project-${project}"
+            local has_socket=false
+            [ -S "${socket_dir}/${socket}" ] && has_socket=true
+
+            _tp_new_and_attach() {
+                mkdir -p "$data_dir/resurrect"
+                TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" new-session -d -s "$project"
+                TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" set -g @resurrect-dir "$data_dir/resurrect"
+                TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" attach-session -t "$project"
+            }
+
+            if $has_socket; then
+                local attached
+                attached=$(tmux -L "$socket" list-sessions -F '#{session_attached}' 2>/dev/null)
+                if [ "$attached" = "1" ]; then
+                    echo "Project '$project' is already attached elsewhere."
+                    echo "  [a] Attach here too (shared)"
+                    echo "  [d] Detach other client and attach here"
+                    echo "  [q] Abort"
+                    printf "Choose [a/d/q]: " && read -r choice
+                    case "$choice" in
+                        a) TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" attach-session -t "$project" ;;
+                        d) TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" attach-session -d -t "$project" ;;
+                        *) echo "Aborted." ; return 0 ;;
+                    esac
+                else
+                    TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" attach-session -t "$project"
+                fi
+            elif [ -d "$data_dir" ]; then
+                _tp_new_and_attach
+            else
+                echo "No project '$project' found."
+                printf "Create and start? [y/N]: " && read -r choice
+                case "$choice" in
+                    y|Y)
+                        mkdir -p "$data_dir"
+                        _tp_new_and_attach
+                        ;;
+                    *) echo "Aborted." ; return 0 ;;
+                esac
+            fi
+            ;;
+    esac
+}
+
 function xasdf() {
   sub=$1
   subsub=$2

@@ -39,14 +39,12 @@ blocks:
           template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} "
           properties:
             fetch_version: false
-        - type: command
+        - type: text
           style: powerline
           powerline_symbol: "\ue0b0"
           background: "#7ebae4"
           foreground: "#100e23"
-          template: " ❄ {{ .Output }} "
-          properties:
-            command: "echo $PATH | awk 'BEGIN{RS=\":\"} /\\/nix\\/store\\//{sub(/\\/nix\\/store\\/[^-]*-/,\"\"); sub(/-[0-9].*/,\"\"); printf sep$0; sep=\",\"} END{if(sep)print \"\"}'"
+          template: "{{ if .Env.POSH_NIX_SHELL_INFO }} ❄ {{ if .Env.POSH_IN_NIX_SHELL }}{{ .Env.POSH_IN_NIX_SHELL }}{{ else }}{{ .Env.POSH_NIX_SHELL_INFO }}{{ end }} {{ end }}"
     - type: prompt
       alignment: right
       segments:

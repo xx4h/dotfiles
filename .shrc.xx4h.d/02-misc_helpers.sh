@@ -125,6 +125,22 @@ function kubernetes_delete_namespace_finalizer() {
 EOF
 }
 
+function _nix_shell_info() {
+  if [ -n "${IN_NIX_SHELL}" ]; then
+    echo "${IN_NIX_SHELL}"
+  else
+    echo $PATH | awk 'BEGIN{RS=":"} /\/nix\/store\//{sub(/\/nix\/store\/[^-]*-/,""); sub(/-[0-9].*/,""); printf sep$0; sep=","} END{if(sep)print ""}'
+  fi
+}
+
+# oh my posh Helper
+function set_poshcontext() {
+  POSH_IN_NIX_SHELL=$IN_NIX_SHELL
+  POSH_NIX_SHELL_INFO=$(_nix_shell_info)
+
+  export POSH_IN_NIX_SHELL POSH_NIX_SHELL_INFO
+}
+
 # clean and reset git repo with recursive submodules
 function git_clean_reset_sub_recursive() {
   git clean -xfd

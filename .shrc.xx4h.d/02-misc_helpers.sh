@@ -283,9 +283,11 @@ function tp() {
         -d|--detached) _tp_list detached ;;
         -s|--stopped)  _tp_list stopped ;;
         -h|--help)
-            echo "Usage: tp [OPTIONS] [PROJECT_NAME]"
+            echo "Usage: tp [OPTIONS] [PROJECT_NAME] [WORKDIR]"
             echo ""
-            echo "  tp PROJECT_NAME    Create or attach to project session"
+            echo "  tp PROJECT_NAME             Create or attach to project session"
+            echo "  tp PROJECT_NAME WORKDIR     Set/update default working directory"
+            echo "                              (used as start-directory on session create)"
             echo "  tp -l, --list      List all project sessions"
             echo "  tp -r, --running   List running sessions (attached + detached)"
             echo "  tp -a, --attached  List attached sessions"
@@ -294,7 +296,7 @@ function tp() {
             echo "  tp -h, --help      Show this help"
             ;;
         "")
-            echo "Usage: tp [OPTIONS] PROJECT_NAME (see tp --help)"
+            echo "Usage: tp [OPTIONS] PROJECT_NAME [WORKDIR] (see tp --help)"
             return 1
             ;;
         -*)
@@ -303,19 +305,44 @@ function tp() {
             ;;
         *)
             local project="$1"
+            local workdir="${2:-}"
             local data_dir="${base_dir}/${project}"
             local socket="project-${project}"
             local has_socket=false
             [ -S "${socket_dir}/${socket}" ] && has_socket=true
 
+            if [ -n "$workdir" ]; then
+                if [ ! -d "$workdir" ]; then
+                    echo "Working directory '$workdir' does not exist."
+                    return 1
+                fi
+                workdir="$(cd "$workdir" && pwd)"
+            fi
+
+            _tp_save_workdir() {
+                [ -n "$workdir" ] || return 0
+                mkdir -p "$data_dir"
+                printf '%s\n' "$workdir" > "$data_dir/workdir"
+            }
+
             _tp_new_and_attach() {
                 mkdir -p "$data_dir/resurrect"
-                TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" new-session -d -s "$project"
+                local start_dir=""
+                [ -n "$workdir" ] && start_dir="$workdir"
+                [ -z "$start_dir" ] && [ -f "$data_dir/workdir" ] && start_dir="$(cat "$data_dir/workdir")"
+                local new_session_args=(-d -s "$project")
+                [ -n "$start_dir" ] && new_session_args=(-d -c "$start_dir" -s "$project")
+                TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" new-session "${new_session_args[@]}"
                 TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" set -g @resurrect-dir "$data_dir/resurrect"
                 TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" attach-session -t "$project"
             }
 
             if $has_socket && tmux -L "$socket" has-session -t "$project" 2>/dev/null; then
+                if [ -n "$workdir" ]; then
+                    _tp_save_workdir
+                    echo "Updated default working directory for '$project': $workdir"
+                    echo "(applies to next session create; running session unchanged)"
+                fi
                 local attached
                 attached=$(tmux -L "$socket" list-sessions -t "$project" -F '#{session_attached}' 2>/dev/null)
                 if [ "$attached" = "1" ]; then
@@ -333,6 +360,7 @@ function tp() {
                     TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" attach-session -t "$project"
                 fi
             elif [ -d "$data_dir" ]; then
+                _tp_save_workdir
                 _tp_new_and_attach
             else
                 echo "No project '$project' found."
@@ -340,6 +368,7 @@ function tp() {
                 case "$choice" in
                     y|Y)
                         mkdir -p "$data_dir"
+                        _tp_save_workdir
                         _tp_new_and_attach
                         ;;
                     *) echo "Aborted." ; return 0 ;;

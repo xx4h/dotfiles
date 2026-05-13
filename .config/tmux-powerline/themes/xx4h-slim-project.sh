@@ -108,7 +108,7 @@ fi
 
 if [ -z "$TMUX_POWERLINE_LEFT_STATUS_SEGMENTS" ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
-		"status_icon 148 234 default_separator no_sep_bg_color no_sep_fg_color no_spacing_disable separator_disable"
+		"project_icon 202 234 default_separator no_sep_bg_color no_sep_fg_color no_spacing_disable separator_disable"
 		"tmux_session_info 148 234"
 		"vcs_branch 51 88"
 		"vcs_rootpath 123 17"

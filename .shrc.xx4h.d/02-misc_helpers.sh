@@ -243,18 +243,38 @@ function tp() {
         local filter="${1:-all}"  # all, running, attached, detached, stopped
         local running_projects=()
 
+        # Colors: enabled only on a tty and when NO_COLOR is unset.
+        local c_reset="" c_green="" c_yellow="" c_gray=""
+        if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+            c_reset=$'\033[0m'
+            c_green=$'\033[32m'
+            c_yellow=$'\033[33m'
+            c_gray=$'\033[90m'
+        fi
+
+        # Buffer rows ("name|state") so the name column can be sized from real data.
+        local rows=()
+        local max_name=0
+
+        _tp_add_row() {
+            [ "${#1}" -gt "$max_name" ] && max_name=${#1}
+            rows+=("${1}|${2}")
+        }
+
         # Find running project sockets
         if [ -d "$socket_dir" ]; then
             for sock in "$socket_dir"/project-*; do
                 [ -S "$sock" ] || continue
                 local name="${sock##*/project-}"
                 running_projects+=("$name")
-                local state
+                local state=""
                 state=$(tmux -L "project-${name}" list-sessions -F '#{session_attached}' 2>/dev/null)
+                local state_label="detached"
+                [ "$state" = "1" ] && state_label="attached"
                 case "$filter" in
-                    running|all)  printf "%-20s %s\n" "$name" "$([ "$state" = "1" ] && echo "attached" || echo "detached")" ;;
-                    attached)     [ "$state" = "1" ] && printf "%-20s %s\n" "$name" "attached" ;;
-                    detached)     [ "$state" != "1" ] && printf "%-20s %s\n" "$name" "detached" ;;
+                    running|all)  _tp_add_row "$name" "$state_label" ;;
+                    attached)     [ "$state" = "1" ] && _tp_add_row "$name" "$state_label" ;;
+                    detached)     [ "$state" != "1" ] && _tp_add_row "$name" "$state_label" ;;
                 esac
             done
         fi
@@ -270,10 +290,26 @@ function tp() {
                     for rp in "${running_projects[@]}"; do
                         [ "$rp" = "$name" ] && is_running=true && break
                     done
-                    $is_running || printf "%-20s %s\n" "$name" "stopped"
+                    $is_running || _tp_add_row "$name" "stopped"
                 done
             fi
         fi
+
+        # Render: "<glyph> <name padded> (<state>)" — full row colored by state.
+        # name_w = longest name + 1 ensures at least 1 space before "(state)".
+        local name_w=$((max_name + 1))
+        local row="" n="" l="" glyph="" color=""
+        for row in "${rows[@]}"; do
+            n="${row%|*}"
+            l="${row#*|}"
+            case "$l" in
+                attached) glyph="●"; color="$c_green"  ;;
+                detached) glyph="○"; color="$c_yellow" ;;
+                stopped)  glyph="◌"; color="$c_gray"   ;;
+                *)        glyph="·"; color=""          ;;
+            esac
+            printf "${color}%s %-${name_w}s(%s)${c_reset}\n" "$glyph" "$n" "$l"
+        done
     }
 
     case "${1:-}" in

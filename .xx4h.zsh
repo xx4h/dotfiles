@@ -6,6 +6,10 @@ for rc_file in $(find ~/.pre.shrc.d -name '*.sh' -o -name '*.zsh' 2>/dev/null | 
   source "$rc_file"
 done
 
+# oh-my-posh init must run BEFORE the shrc.d sources so our
+# set_poshcontext overrides the empty stub from omp's init script.
+eval "$(oh-my-posh init zsh --config ~/.config/omp/xx4h.omp.yaml)"
+
 # source xx4h sh & zsh stuff
 for rc_file in $(find ~/.shrc.xx4h.d -name '*.sh' -o -name '*.zsh' 2>/dev/null | sort); do
   source "$rc_file"
@@ -14,8 +18,6 @@ done
 for rc_file in $(find ~/.shrc.d -name '*.sh' -o -name '*.zsh' 2>/dev/null | sort); do
   source "$rc_file"
 done
-
-eval "$(oh-my-posh init zsh --config ~/.config/omp/xx4h.omp.yaml)"
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH

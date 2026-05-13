@@ -368,8 +368,9 @@ function tp() {
                 [ -z "$start_dir" ] && [ -f "$data_dir/workdir" ] && start_dir="$(cat "$data_dir/workdir")"
                 local new_session_args=(-d -s "$project")
                 [ -n "$start_dir" ] && new_session_args=(-d -c "$start_dir" -s "$project")
+                # @resurrect-dir is set in .tmux-project.conf from $TMUX_PROJECT_DATA_DIR
+                # (must happen before continuum loads, hence not done here).
                 TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" new-session "${new_session_args[@]}"
-                TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" set -g @resurrect-dir "$data_dir/resurrect"
                 TMUX_PROJECT_DATA_DIR="$data_dir" tmux -f ~/.tmux-project.conf -L "$socket" attach-session -t "$project"
             }
 

@@ -46,4 +46,11 @@ return {
    		},
    	},
    },
+
+  -- Continuous session tracking. Save target is driven by an autocmd in
+  -- options.lua so sessions land under $XDG_STATE_HOME, not project dirs.
+  {
+    "tpope/vim-obsession",
+    lazy = false,
+  },
 }

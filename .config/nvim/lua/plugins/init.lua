@@ -1,7 +1,3 @@
--- TODO: find way to share this variable with ../configs/lspconfig.lua
--- Don't forget to also modify ../configs/lspconfig.lua
-local servers = { "html", "cssls", "markdown_oxide", "bashls", "golangci_lint_ls", "pylsp" }
-
 return {
   {
     "stevearc/conform.nvim",
@@ -28,13 +24,6 @@ return {
        require("nvchad.configs.lspconfig").defaults()
        require "configs.lspconfig"
      end,
-   },
-
-   {
-   	"williamboman/mason.nvim",
-   	opts = {
-      ensure_installed = servers
-   	},
    },
 
    {

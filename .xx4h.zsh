@@ -109,6 +109,8 @@ my-backward-delete-word() {
     WORDCHARS="${WORDCHARS//\/}"
     # Use bash string manipulation to remove `.` so our delete will stop at it
     WORDCHARS="${WORDCHARS//.}"
+    # Use bash string manipulation to remove `-` so our delete will stop at it
+    WORDCHARS="${WORDCHARS//-}"
     # zle <widget-name> will run an existing widget.
     zle backward-kill-word
 }

@@ -134,6 +134,7 @@ if [ -z "$TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS" ]; then
 		"pwd 123 0"
 		#"macos_notification_count 29 255"
 		#"mailcount 9 255"
+		"claude_code 33 255"
 		"now_playing 51 0"
 		#"cpu 240 136"
 		#"load 237 167"

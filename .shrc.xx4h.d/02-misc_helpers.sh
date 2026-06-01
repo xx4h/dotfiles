@@ -312,12 +312,52 @@ function tp() {
         done
     }
 
+    # Helper: gracefully stop a running project — save tmux-resurrect state
+    # first (so @continuum-restore brings it back as it was), then kill the
+    # per-project server. run-shell (no -b) blocks until save.sh completes, so
+    # the kill never races the save.
+    _tp_stop() {
+        local name="$1"
+        local sock="${socket_dir}/project-${name}"
+        if [ ! -S "$sock" ]; then
+            echo "Project '$name' is not running."
+            return 1
+        fi
+        echo "Saving and stopping project '$name'..."
+        tmux -L "project-${name}" run-shell \
+            "$HOME/.tmux/plugins/tmux-resurrect/scripts/save.sh" 2>/dev/null || true
+        tmux -L "project-${name}" kill-server 2>/dev/null || true
+    }
+
+    # Helper: stop every running project (save each, then kill its server).
+    _tp_stop_all() {
+        local found=false
+        if [ -d "$socket_dir" ]; then
+            for sock in "$socket_dir"/project-*; do
+                [ -S "$sock" ] || continue
+                found=true
+                _tp_stop "${sock##*/project-}"
+            done
+        fi
+        $found || echo "No running projects."
+    }
+
     case "${1:-}" in
         -l|--list)     _tp_list all ;;
         -r|--running)  _tp_list running ;;
         -a|--attached) _tp_list attached ;;
         -d|--detached) _tp_list detached ;;
         -s|--stopped)  _tp_list stopped ;;
+        -S|--stop)
+            case "${2:-}" in
+                -a|--all) _tp_stop_all ;;
+                "")
+                    echo "Usage: tp -S PROJECT_NAME | tp -S --all (see tp --help)"
+                    return 1
+                    ;;
+                *) _tp_stop "$2" ;;
+            esac
+            ;;
         -h|--help)
             echo "Usage: tp [OPTIONS] [PROJECT_NAME] [WORKDIR]"
             echo ""
@@ -329,6 +369,8 @@ function tp() {
             echo "  tp -a, --attached  List attached sessions"
             echo "  tp -d, --detached  List detached sessions"
             echo "  tp -s, --stopped   List stopped sessions (data dir exists, no socket)"
+            echo "  tp -S, --stop PROJECT_NAME   Save (resurrect) and stop a project"
+            echo "  tp -S, --stop --all          Save and stop all running projects"
             echo "  tp -h, --help      Show this help"
             ;;
         "")
